@@ -20,8 +20,9 @@ public class Greeting {
   }
 
   // Constructor with fields
-  public Greeting(String content) {
+  public Greeting(String content, String username) {
     this.content = content;
+    this.username = username;
   }
 
   // Getters and setters
@@ -44,12 +45,13 @@ public class Greeting {
   public String getUsername() {
     return username;
   }
+
   public void setUsername(String username) {
     this.username = username;
   }
 
   @Override
   public String toString() {
-    return "Greeting{id=" + id + ", content='" + content + " username='" + username + "'}";
+    return "Greeting{id=" + id + ", content='" + content + "', username='" + username + "'}";
   }
 }
