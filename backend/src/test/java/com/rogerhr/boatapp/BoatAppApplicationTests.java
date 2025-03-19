@@ -9,13 +9,12 @@ class BoatAppApplicationTests {
   @Test
   void contextLoads() {
     /*
-     * Ce test vérifie simplement si le contexte Spring Boot se charge correctement.
-     * Il est intentionnellement vide, car Spring Boot exécutera automatiquement
-     * l'initialisation du contexte d'application et échouera si un problème est
-     * détecté.
+     * This test simply checks if the Spring Boot context loads correctly.
+     * It is intentionally empty, as Spring Boot will automatically execute
+     * the application context initialization and will fail if any issues are
+     * detected.
      * 
-     * Si nécessaire, nous pouvons ajouter d'autres assertions pour vérifier
-     * certains beans spécifiques.
+     * If necessary, we can add further assertions to check specific beans.
      */
   }
 

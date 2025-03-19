@@ -14,17 +14,19 @@ public class BoatMapper {
     if (boat == null) {
       return null;
     }
-    return new BoatDTO(
-        boat.getId(),
-        boat.getName(),
-        boat.getDescription(),
-        boat.getYear(),
-        boat.getLength(),
-        boat.getOwnerName(),
-        boat.getPrice(),
-        boat.getRegistrationNumber(),
-        boat.getCreatedAt(),
-        boat.getUpdatedAt());
+    // Utilisation du Builder pour créer un BoatDTO
+    return new BoatDTO.Builder()
+        .setId(boat.getId())
+        .setName(boat.getName())
+        .setDescription(boat.getDescription())
+        .setYear(boat.getYear())
+        .setLength(boat.getLength())
+        .setOwnerName(boat.getOwnerName())
+        .setPrice(boat.getPrice())
+        .setRegistrationNumber(boat.getRegistrationNumber())
+        .setCreatedAt(boat.getCreatedAt())
+        .setUpdatedAt(boat.getUpdatedAt())
+        .build();
   }
 
   // Convertir un BoatCreateDTO en Boat (pour la création)
