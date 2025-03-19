@@ -1,4 +1,6 @@
-package com.rogerhr.boatapp;
+package com.rogerhr.boatapp.repository;
+
+import com.rogerhr.boatapp.model.Greeting;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

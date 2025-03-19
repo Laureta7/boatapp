@@ -1,4 +1,4 @@
-package com.rogerhr.boatapp;
+package com.rogerhr.boatapp.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rogerhr.boatapp.model.Greeting;
+import com.rogerhr.boatapp.repository.GreetingRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

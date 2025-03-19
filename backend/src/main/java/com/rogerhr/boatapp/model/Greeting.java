@@ -1,4 +1,4 @@
-package com.rogerhr.boatapp;
+package com.rogerhr.boatapp.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

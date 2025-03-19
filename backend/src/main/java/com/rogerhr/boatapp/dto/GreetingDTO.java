@@ -1,5 +1,5 @@
 
-package com.rogerhr.boatapp;
+package com.rogerhr.boatapp.dto;
 
 public class GreetingDTO {
 

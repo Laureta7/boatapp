@@ -1,6 +1,10 @@
-package com.rogerhr.boatapp;
+package com.rogerhr.boatapp.controller;
 
 import java.util.List;
+
+import com.rogerhr.boatapp.dto.GreetingDTO;
+import com.rogerhr.boatapp.model.Greeting;
+import com.rogerhr.boatapp.repository.GreetingRepository;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
