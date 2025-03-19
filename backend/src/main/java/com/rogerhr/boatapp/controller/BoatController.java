@@ -4,11 +4,11 @@ package com.rogerhr.boatapp.controller;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.validation.Valid;
-
-import com.rogerhr.boatapp.dto.BoatDTO;
+import com.rogerhr.boatapp.dto.BoatRequestDTO;
+import com.rogerhr.boatapp.dto.BoatResponseDTO;
 import com.rogerhr.boatapp.service.BoatService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,28 +29,34 @@ public class BoatController {
     this.boatService = boatService;
   }
 
-  // Get all boats
+  // Get all boats (Retourne une liste de BoatResponseDTO)
   @GetMapping
-  public ResponseEntity<List<BoatDTO>> getAllBoats() {
-    return ResponseEntity.ok(boatService.getAllBoats());
+  public ResponseEntity<List<BoatResponseDTO>> getAllBoats() {
+    List<BoatResponseDTO> boats = boatService.getAllBoats();
+    return ResponseEntity.ok(boats);
   }
 
-  // Get a boat by ID
+  // Get a boat by ID (Retourne un BoatResponseDTO)
   @GetMapping("/{id}")
-  public ResponseEntity<BoatDTO> getBoatById(@PathVariable UUID id) {
-    return ResponseEntity.ok(boatService.getBoatById(id));
+  public ResponseEntity<BoatResponseDTO> getBoatById(@PathVariable UUID id) {
+    BoatResponseDTO boat = boatService.getBoatById(id);
+    return ResponseEntity.ok(boat);
   }
 
-  // Create a boat
+  // Create a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
   @PostMapping
-  public ResponseEntity<BoatDTO> createBoat(@Valid @RequestBody BoatDTO boatDTO) {
-    return ResponseEntity.ok(boatService.createBoat(boatDTO));
+  public ResponseEntity<BoatResponseDTO> createBoat(@RequestBody BoatRequestDTO boatRequestDTO) {
+    BoatResponseDTO createdBoat = boatService.createBoat(boatRequestDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(createdBoat);
   }
 
-  // Update a boat
+  // Update a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
   @PutMapping("/{id}")
-  public ResponseEntity<BoatDTO> updateBoat(@PathVariable UUID id, @Valid @RequestBody BoatDTO boatDTO) {
-    return ResponseEntity.ok(boatService.updateBoat(id, boatDTO));
+  public ResponseEntity<BoatResponseDTO> updateBoat(
+      @PathVariable UUID id,
+      @RequestBody BoatRequestDTO boatRequestDTO) {
+    BoatResponseDTO updatedBoat = boatService.updateBoat(id, boatRequestDTO);
+    return ResponseEntity.ok(updatedBoat);
   }
 
   // Delete a boat

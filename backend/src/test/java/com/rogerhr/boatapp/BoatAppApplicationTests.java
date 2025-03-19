@@ -13,7 +13,7 @@ class BoatAppApplicationTests {
      * It is intentionally empty, as Spring Boot will automatically execute
      * the application context initialization and will fail if any issues are
      * detected.
-     * 
+     *
      * If necessary, we can add further assertions to check specific beans.
      */
   }

@@ -12,7 +12,7 @@
 	<artifactId>boatapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Boat App</name>
-	<description>A simple app to manage boats using Spring Boot</description>
+	<description>A simple app to manage boats using Spring Boot.</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+    <java.version>21</java.version>
 	</properties>
 	<dependencies>
     <dependency>
@@ -70,15 +70,40 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version>
+      </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
     </dependency>
-
+    
   </dependencies>
   
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
       </plugin>
       <plugin>
           <groupId>org.jacoco</groupId>
@@ -98,7 +123,8 @@
                   </goals>
               </execution>
           </executions>
-      </plugin>
+        </plugin>
+
 		</plugins>
 	</build>
 

@@ -4,7 +4,8 @@ package com.rogerhr.boatapp.service;
 import java.util.List;
 import java.util.UUID;
 
-import com.rogerhr.boatapp.dto.BoatDTO;
+import com.rogerhr.boatapp.dto.BoatRequestDTO;
+import com.rogerhr.boatapp.dto.BoatResponseDTO;
 import com.rogerhr.boatapp.exception.BoatNotFoundException;
 import com.rogerhr.boatapp.mapper.BoatMapper;
 import com.rogerhr.boatapp.model.Boat;
@@ -25,44 +26,58 @@ public class BoatService {
   }
 
   // Get all boats
-  public List<BoatDTO> getAllBoats() {
-    List<Boat> boats = boatRepository.findAll();
-
-    return boats.stream()
-        .map(boatMapper::toDTO)
+  public List<BoatResponseDTO> getAllBoats() {
+    return boatRepository.findAll()
+        .stream()
+        .map(boatMapper::toResponseDTO)
         .toList();
   }
 
   // Get a boat by ID
-  public BoatDTO getBoatById(UUID id) {
+  public BoatResponseDTO getBoatById(UUID id) {
     Boat boat = boatRepository.findById(id)
         .orElseThrow(() -> new BoatNotFoundException(id));
-    return boatMapper.toDTO(boat);
+    return boatMapper.toResponseDTO(boat);
   }
 
   // Create a boat
   @Transactional
-  public BoatDTO createBoat(BoatDTO boatDTO) {
-    Boat boat = boatMapper.createToEntity(boatDTO);
+  public BoatResponseDTO createBoat(BoatRequestDTO boatRequestDTO) {
+    Boat boat = boatMapper.toEntity(boatRequestDTO);
     Boat savedBoat = boatRepository.save(boat);
-    return boatMapper.toDTO(savedBoat);
+    return boatMapper.toResponseDTO(savedBoat);
   }
 
-  // Update a boat
   @Transactional
-  public BoatDTO updateBoat(UUID id, BoatDTO boatDTO) {
+  public BoatResponseDTO updateBoat(UUID id, BoatRequestDTO boatRequestDTO) {
     Boat existingBoat = boatRepository.findById(id)
         .orElseThrow(() -> new BoatNotFoundException(id));
-    existingBoat.setName(boatDTO.getName());
-    existingBoat.setDescription(boatDTO.getDescription());
-    existingBoat.setYear(boatDTO.getYear());
-    existingBoat.setLength(boatDTO.getLength());
-    existingBoat.setOwnerName(boatDTO.getOwnerName());
-    existingBoat.setPrice(boatDTO.getPrice());
-    existingBoat.setRegistrationNumber(boatDTO.getRegistrationNumber());
+
+    // Mise à jour des champs uniquement si de nouvelles valeurs sont fournies
+    if (boatRequestDTO.getName() != null) {
+      existingBoat.setName(boatRequestDTO.getName());
+    }
+    if (boatRequestDTO.getDescription() != null) {
+      existingBoat.setDescription(boatRequestDTO.getDescription());
+    }
+    if (boatRequestDTO.getYear() != 0) {
+      existingBoat.setYear(boatRequestDTO.getYear());
+    }
+    if (boatRequestDTO.getLength() != 0) {
+      existingBoat.setLength(boatRequestDTO.getLength());
+    }
+    if (boatRequestDTO.getOwnerName() != null) {
+      existingBoat.setOwnerName(boatRequestDTO.getOwnerName());
+    }
+    if (boatRequestDTO.getPrice() != 0) {
+      existingBoat.setPrice(boatRequestDTO.getPrice());
+    }
+    if (boatRequestDTO.getRegistrationNumber() != null) {
+      existingBoat.setRegistrationNumber(boatRequestDTO.getRegistrationNumber());
+    }
 
     Boat updatedBoat = boatRepository.save(existingBoat);
-    return boatMapper.toDTO(updatedBoat);
+    return boatMapper.toResponseDTO(updatedBoat);
   }
 
   // Delete a boat

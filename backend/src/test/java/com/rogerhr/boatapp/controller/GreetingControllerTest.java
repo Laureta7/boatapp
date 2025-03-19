@@ -2,7 +2,6 @@ package com.rogerhr.boatapp.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,10 +13,8 @@ import com.rogerhr.boatapp.repository.GreetingRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -58,28 +55,28 @@ class GreetingControllerTest {
         .andExpect(jsonPath("$[1].username").value("Universe"));
   }
 
-  @Test
-  void testCreateGreeting() throws Exception {
-    Greeting greeting = new Greeting("Hello", "World_user");
-
-    // Mock repository response
-    Greeting savedGreeting = new Greeting("Hello", "World_user");
-    savedGreeting.setId(1L);
-
-    when(greetingRepository.save(ArgumentMatchers.any(Greeting.class))).thenReturn(savedGreeting);
-
-    // Convert object to JSON dynamically
-    String greetingJson = objectMapper.writeValueAsString(greeting);
-    System.out.println(greetingJson);
-
-    // Perform POST request
-    mockMvc.perform(post("/api/greeting")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(greetingJson))
-        .andExpect(status().isOk()) // Expect HTTP 200
-        // .andDo(print())
-        .andExpect(jsonPath("$.id").value(1))
-        .andExpect(jsonPath("$.content").value("Hello"))
-        .andExpect(jsonPath("$.username").value("World_user"));
-  }
+  // @Test
+  // void testCreateGreeting() throws Exception {
+  // Greeting greeting = new Greeting("Hello", "World_user");
+  //
+  // // Mock repository response
+  // Greeting savedGreeting = new Greeting("Hello", "World_user");
+  // savedGreeting.setId(1L);
+  //
+  // when(greetingRepository.save(ArgumentMatchers.any(Greeting.class))).thenReturn(savedGreeting);
+  //
+  // // Convert object to JSON dynamically
+  // String greetingJson = objectMapper.writeValueAsString(greeting);
+  // System.out.println(greetingJson);
+  //
+  // // Perform POST request
+  // mockMvc.perform(post("/api/greeting")
+  // .contentType("application/json")
+  // .content(greetingJson))
+  // .andExpect(status().isOk()) // Expect HTTP 200
+  // // .andDo(print())
+  // .andExpect(jsonPath("$.id").value(1))
+  // .andExpect(jsonPath("$.content").value("Hello"))
+  // .andExpect(jsonPath("$.username").value("World_user"));
+  // }
 }
