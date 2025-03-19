@@ -50,7 +50,7 @@ public class BoatController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdBoat);
   }
 
-  // Update a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
+  // Update a boat
   @PutMapping("/{id}")
   public ResponseEntity<BoatResponseDTO> updateBoat(
       @PathVariable UUID id,

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoatMapper {
 
-  // Convertir un BoatRequestDTO en Boat (pour la création)
+  // Convert a BoatRequestDTO to Boat
   public Boat toEntity(BoatRequestDTO boatRequestDTO) {
     if (boatRequestDTO == null) {
       return null;
@@ -27,7 +27,7 @@ public class BoatMapper {
     return boat;
   }
 
-  // Convertir un Boat en BoatResponseDTO
+  // Convert a Boat to BoatResponseDTO
   public BoatResponseDTO toResponseDTO(Boat boat) {
     if (boat == null) {
       return null;

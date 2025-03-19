@@ -53,7 +53,7 @@ public class BoatService {
     Boat existingBoat = boatRepository.findById(id)
         .orElseThrow(() -> new BoatNotFoundException(id));
 
-    // Mise à jour des champs uniquement si de nouvelles valeurs sont fournies
+    // Update the fields that are not null or 0 (Should be updated ??)
     if (boatRequestDTO.getName() != null) {
       existingBoat.setName(boatRequestDTO.getName());
     }
