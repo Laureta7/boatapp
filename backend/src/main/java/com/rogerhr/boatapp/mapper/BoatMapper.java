@@ -1,6 +1,5 @@
 package com.rogerhr.boatapp.mapper;
 
-import com.rogerhr.boatapp.dto.BoatCreateDTO;
 import com.rogerhr.boatapp.dto.BoatDTO;
 import com.rogerhr.boatapp.model.Boat;
 
@@ -30,18 +29,18 @@ public class BoatMapper {
   }
 
   // Convertir un BoatCreateDTO en Boat (pour la création)
-  public Boat toEntity(BoatCreateDTO boatCreateDTO) {
-    if (boatCreateDTO == null) {
+  public Boat createToEntity(BoatDTO boatDTO) {
+    if (boatDTO == null) {
       return null;
     }
     Boat boat = new Boat();
-    boat.setName(boatCreateDTO.getName());
-    boat.setDescription(boatCreateDTO.getDescription());
-    boat.setYear(boatCreateDTO.getYear());
-    boat.setLength(boatCreateDTO.getLength());
-    boat.setOwnerName(boatCreateDTO.getOwnerName());
-    boat.setPrice(boatCreateDTO.getPrice());
-    boat.setRegistrationNumber(boatCreateDTO.getRegistrationNumber());
+    boat.setName(boatDTO.getName());
+    boat.setDescription(boatDTO.getDescription());
+    boat.setYear(boatDTO.getYear());
+    boat.setLength(boatDTO.getLength());
+    boat.setOwnerName(boatDTO.getOwnerName());
+    boat.setPrice(boatDTO.getPrice());
+    boat.setRegistrationNumber(boatDTO.getRegistrationNumber());
     return boat;
   }
 

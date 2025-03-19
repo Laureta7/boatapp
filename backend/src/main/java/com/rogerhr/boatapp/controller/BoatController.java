@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import jakarta.validation.Valid;
 
-import com.rogerhr.boatapp.dto.BoatCreateDTO;
 import com.rogerhr.boatapp.dto.BoatDTO;
 import com.rogerhr.boatapp.service.BoatService;
 
@@ -44,7 +43,7 @@ public class BoatController {
 
   // Create a boat
   @PostMapping
-  public ResponseEntity<BoatDTO> createBoat(@Valid @RequestBody BoatCreateDTO boatDTO) {
+  public ResponseEntity<BoatDTO> createBoat(@Valid @RequestBody BoatDTO boatDTO) {
     return ResponseEntity.ok(boatService.createBoat(boatDTO));
   }
 

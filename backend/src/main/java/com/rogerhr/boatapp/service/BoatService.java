@@ -4,7 +4,6 @@ package com.rogerhr.boatapp.service;
 import java.util.List;
 import java.util.UUID;
 
-import com.rogerhr.boatapp.dto.BoatCreateDTO;
 import com.rogerhr.boatapp.dto.BoatDTO;
 import com.rogerhr.boatapp.exception.BoatNotFoundException;
 import com.rogerhr.boatapp.mapper.BoatMapper;
@@ -43,8 +42,8 @@ public class BoatService {
 
   // Create a boat
   @Transactional
-  public BoatDTO createBoat(BoatCreateDTO boatDTO) {
-    Boat boat = boatMapper.toEntity(boatDTO);
+  public BoatDTO createBoat(BoatDTO boatDTO) {
+    Boat boat = boatMapper.createToEntity(boatDTO);
     Boat savedBoat = boatRepository.save(boat);
     return boatMapper.toDTO(savedBoat);
   }
