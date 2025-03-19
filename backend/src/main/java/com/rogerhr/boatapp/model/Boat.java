@@ -52,6 +52,12 @@ public class Boat {
 
   // Constructeur par défaut qui génère un UUID
   public Boat() {
+    /*
+     * Default constructor required for JSON deserialization by Spring Boot.
+     * It's intentionally empty as Spring initializes properties via setters.
+     * If specific logic was needed, it could be added here.
+     */
+
   }
 
   @PrePersist

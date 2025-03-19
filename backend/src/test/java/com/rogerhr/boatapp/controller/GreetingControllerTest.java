@@ -34,7 +34,7 @@ class GreetingControllerTest {
   private ObjectMapper objectMapper;
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     // Aucun setup nécessaire pour ObjectMapper (Spring l'injecte automatiquement)
   }
 

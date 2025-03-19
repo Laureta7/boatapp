@@ -3,10 +3,10 @@ package com.rogerhr.boatapp.service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.rogerhr.boatapp.dto.BoatCreateDTO;
 import com.rogerhr.boatapp.dto.BoatDTO;
+import com.rogerhr.boatapp.exception.BoatNotFoundException;
 import com.rogerhr.boatapp.mapper.BoatMapper;
 import com.rogerhr.boatapp.model.Boat;
 import com.rogerhr.boatapp.repository.BoatRepository;
@@ -28,15 +28,16 @@ public class BoatService {
   // Get all boats
   public List<BoatDTO> getAllBoats() {
     List<Boat> boats = boatRepository.findAll();
+
     return boats.stream()
         .map(boatMapper::toDTO)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   // Get a boat by ID
   public BoatDTO getBoatById(UUID id) {
     Boat boat = boatRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Boat not found"));
+        .orElseThrow(() -> new BoatNotFoundException(id));
     return boatMapper.toDTO(boat);
   }
 
@@ -52,7 +53,7 @@ public class BoatService {
   @Transactional
   public BoatDTO updateBoat(UUID id, BoatDTO boatDTO) {
     Boat existingBoat = boatRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Boat not found"));
+        .orElseThrow(() -> new BoatNotFoundException(id));
     existingBoat.setName(boatDTO.getName());
     existingBoat.setDescription(boatDTO.getDescription());
     existingBoat.setYear(boatDTO.getYear());
@@ -69,7 +70,7 @@ public class BoatService {
   @Transactional
   public void deleteBoat(UUID id) {
     if (!boatRepository.existsById(id)) {
-      throw new RuntimeException("Boat not found");
+      throw new BoatNotFoundException(id);
     }
     boatRepository.deleteById(id);
   }
