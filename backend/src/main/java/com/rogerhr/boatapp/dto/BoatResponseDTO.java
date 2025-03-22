@@ -16,8 +16,8 @@ import lombok.Setter;
 @Builder
 public class BoatResponseDTO {
   private UUID id;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  // private LocalDateTime createdAt;
+  // private LocalDateTime updatedAt;
   private String name;
   private String description;
   private int year;

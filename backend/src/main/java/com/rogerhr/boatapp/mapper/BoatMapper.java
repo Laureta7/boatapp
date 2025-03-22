@@ -42,8 +42,8 @@ public class BoatMapper {
     responseDTO.setOwnerName(boat.getOwnerName());
     responseDTO.setPrice(boat.getPrice());
     responseDTO.setRegistrationNumber(boat.getRegistrationNumber());
-    responseDTO.setCreatedAt(boat.getCreatedAt());
-    responseDTO.setUpdatedAt(boat.getUpdatedAt());
+    // responseDTO.setCreatedAt(boat.getCreatedAt());
+    // responseDTO.setUpdatedAt(boat.getUpdatedAt());
 
     return responseDTO;
   }
