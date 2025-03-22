@@ -10,6 +10,7 @@ import com.rogerhr.boatapp.service.BoatService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,11 @@ public class BoatController {
   public ResponseEntity<BoatResponseDTO> getBoatById(@PathVariable UUID id) {
     BoatResponseDTO boat = boatService.getBoatById(id);
     return ResponseEntity.ok(boat);
+  }
+
+  @GetMapping("/csrf-token")
+  public CsrfToken getCsrfToken(CsrfToken token) {
+    return token;
   }
 
   // Create a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
