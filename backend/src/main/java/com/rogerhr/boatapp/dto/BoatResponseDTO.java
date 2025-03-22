@@ -1,6 +1,5 @@
 package com.rogerhr.boatapp.dto;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -16,8 +15,6 @@ import lombok.Setter;
 @Builder
 public class BoatResponseDTO {
   private UUID id;
-  // private LocalDateTime createdAt;
-  // private LocalDateTime updatedAt;
   private String name;
   private String description;
   private int year;
