@@ -1,1 +1,83 @@
-<p>login works!</p>
+<div ubCard class="w-full max-w-sm mx-auto shadow-lg p-6 bg-white rounded-lg">
+  <div ubCardHeader>
+    <h3 ubCardTitle class="text-xl font-bold">Connexion</h3>
+    <p ubCardDescription class="text-gray-500">Entrez vos informations</p>
+  </div>
+
+  <div ubCardContent>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login($event)"
+      class="flex flex-col space-y-4"
+    >
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium text-muted-foreground"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          ubInput
+          name="email"
+          formControlName="email"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid &&
+            (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">
+            L'email est requis.
+          </div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">
+            Veuillez entrer un email valide.
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-muted-foreground"
+          >Mot de passe</label
+        >
+        <input
+          type="password"
+          id="password"
+          ubInput
+          name="password"
+          formControlName="password"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.touched ||
+              loginForm.get('password')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">
+            Le mot de passe est requis.
+          </div>
+        </div>
+      </div>
+
+      <button ubButton type="submit">Se connecter</button>
+    </form>
+  </div>
+
+  <div ubCardFooter class="text-center">
+    <p class="text-sm text-muted-foreground">
+      Pas encore inscrit ?
+      <a class="text-blue-500" href="register">Créer un compte</a>
+    </p>
+  </div>
+</div>
