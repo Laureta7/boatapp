@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rogerhr.boatapp.model.Users;
 import com.rogerhr.boatapp.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 @RestController
@@ -19,12 +20,14 @@ public class UserController {
   @Autowired
   private UserService service;
 
+  @Operation(summary = "Register user", description = "No authentication required")
   @PostMapping("/register")
   public Users register(@Validated @RequestBody Users user) {
 
     return service.register(user);
   }
 
+  @Operation(summary = "Login user", description = "No authentication required")
   @PostMapping("/login")
   public String login(@RequestBody @Valid Users user) {
     // Log the request path and method

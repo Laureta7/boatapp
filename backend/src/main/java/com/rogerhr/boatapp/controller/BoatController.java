@@ -8,6 +8,8 @@ import com.rogerhr.boatapp.dto.BoatRequestDTO;
 import com.rogerhr.boatapp.dto.BoatResponseDTO;
 import com.rogerhr.boatapp.service.BoatService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -32,24 +34,28 @@ public class BoatController {
 
   // Get all boats (Retourne une liste de BoatResponseDTO)
   @GetMapping
+  @Operation(summary = "Get all boats", description = "Authentication required")
   public ResponseEntity<List<BoatResponseDTO>> getAllBoats() {
     List<BoatResponseDTO> boats = boatService.getAllBoats();
     return ResponseEntity.ok(boats);
   }
 
   // Get a boat by ID (Retourne un BoatResponseDTO)
+  @Operation(summary = "Get a boat by ID", description = "Authentication required")
   @GetMapping("/{id}")
   public ResponseEntity<BoatResponseDTO> getBoatById(@PathVariable UUID id) {
     BoatResponseDTO boat = boatService.getBoatById(id);
     return ResponseEntity.ok(boat);
   }
 
+  @Operation(summary = "Get CSRF token", description = "Authentication required")
   @GetMapping("/csrf-token")
   public CsrfToken getCsrfToken(CsrfToken token) {
     return token;
   }
 
   // Create a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
+  @Operation(summary = "Create a boat", description = "Authentication required")
   @PostMapping
   public ResponseEntity<BoatResponseDTO> createBoat(@RequestBody BoatRequestDTO boatRequestDTO) {
     BoatResponseDTO createdBoat = boatService.createBoat(boatRequestDTO);
@@ -57,6 +63,7 @@ public class BoatController {
   }
 
   // Update a boat
+  @Operation(summary = "Update a boat", description = "Authentication required")
   @PutMapping("/{id}")
   public ResponseEntity<BoatResponseDTO> updateBoat(
       @PathVariable UUID id,
@@ -66,6 +73,7 @@ public class BoatController {
   }
 
   // Delete a boat
+  @Operation(summary = "Delete a boat", description = "Authentication required")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteBoat(@PathVariable UUID id) {
     boatService.deleteBoat(id);
