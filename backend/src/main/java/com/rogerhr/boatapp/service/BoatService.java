@@ -11,19 +11,18 @@ import com.rogerhr.boatapp.mapper.BoatMapper;
 import com.rogerhr.boatapp.model.Boat;
 import com.rogerhr.boatapp.repository.BoatRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BoatService {
 
-  private final BoatRepository boatRepository;
-  private final BoatMapper boatMapper;
+  @Autowired
+  private BoatRepository boatRepository;
 
-  public BoatService(BoatRepository boatRepository, BoatMapper boatMapper) {
-    this.boatRepository = boatRepository;
-    this.boatMapper = boatMapper;
-  }
+  @Autowired
+  private BoatMapper boatMapper;
 
   // Get all boats
   public List<BoatResponseDTO> getAllBoats() {
