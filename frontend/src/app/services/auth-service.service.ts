@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment'; // Adjust the path if necessary
+import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface LoginResponse {
-  token: string; // Define the expected shape of the response from the login endpoint
+  message: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl; // URL for your API
+  private apiUrl = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken(),
   );
@@ -23,39 +23,55 @@ export class AuthService {
     private router: Router,
   ) {}
 
-  // Log in and store the JWT token
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/users/login`, {
-      username,
-      password,
+  // Log in and get response including headers
+  login(
+    username: string,
+    password: string,
+  ): Observable<HttpResponse<LoginResponse>> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true, // Necessary for cookie handling
+      observe: 'response' as 'response', // Get full response
+    };
+
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/users/login`,
+      { username, password },
+      httpOptions,
+    );
+  }
+
+  // Handle login processing
+  loginAndStore(username: string, password: string): void {
+    this.login(username, password).subscribe({
+      next: (response) => {
+        console.log('Response from server:', response);
+        console.log('Response headers:', response.headers.keys());
+
+        // Check for cookie presence in headers (not needed if backend sets it correctly)
+        // Instead of manually parsing response, you rely on servlet's response to send cookie automatically
+        this.isAuthenticatedSubject.next(true);
+        this.router.navigate(['/dashboard']); // Navigate on successful login
+      },
+      error: (error) => {
+        console.error('Login failed', error); // Handle errors
+        this.isAuthenticatedSubject.next(false);
+      },
     });
   }
 
-  // Call this method after a successful login to set the token and notify observers
-  storeToken(token: string): void {
-    localStorage.setItem('token', token); // Store the JWT in local storage
-    this.isAuthenticatedSubject.next(true); // Notify that the user is authenticated
-  }
-
-  // Get the token from local storage
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  // Check if the user is authenticated
+  // Check authentication status
   isAuthenticated(): boolean {
-    return this.hasToken();
+    return !!document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('token=')); // Check if token cookie exists
   }
 
-  // Logout the user
-  logout(): void {
-    localStorage.removeItem('token');
-    this.isAuthenticatedSubject.next(false); // Notify that the user is no longer authenticated
-    this.router.navigate(['/login']); // Redirect to the login page
+  hasToken(): boolean {
+    return !!document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('token=')); // Check if token cookie exists
   }
 
-  // Helper method to check if a token exists
-  private hasToken(): boolean {
-    return !!this.getToken();
-  }
+  // Logout logic: delete cookie, redirect, etc.
 }

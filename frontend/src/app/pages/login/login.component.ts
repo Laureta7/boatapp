@@ -50,16 +50,7 @@ export class LoginComponent {
     event.preventDefault(); // Prevent page reload
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      this.authService.login(username, password).subscribe({
-        next: (response) => {
-          this.authService.storeToken(response.token);
-          console.log('Login successful'); // Log success
-          // Redirect to another route, if necessary
-        },
-        error: (err) => {
-          console.error('Login failed', err); // Handle errors appropriately
-        },
-      });
+      this.authService.loginAndStore(username, password);
     } else {
       console.error('Form is not valid');
     }

@@ -49,7 +49,7 @@ public class UserService {
         // Create a cookie for the JWT
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
-        cookie.setSecure(true); // Use HTTPS only
+        cookie.setSecure(false); // Use HTTPS only
         cookie.setPath("/"); // Make cookie accessible on all routes
         cookie.setMaxAge(3600); // Set expiration time for the cookie (in seconds)
 
