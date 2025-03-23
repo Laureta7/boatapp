@@ -13,7 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.rogerhr.boatapp.filter.JwtFilter;
 import com.rogerhr.boatapp.service.MyUserDetailsService;
 
 @Configuration
@@ -22,6 +24,9 @@ public class SecurityConfig {
 
   @Autowired
   private MyUserDetailsService userDetailsService;
+
+  @Autowired
+  private JwtFilter jwtFilter;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,6 +40,7 @@ public class SecurityConfig {
             .authenticated())
         .httpBasic(Customizer.withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
 
   }
