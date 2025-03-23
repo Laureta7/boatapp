@@ -34,11 +34,13 @@ public class SecurityConfig {
     return http
         .csrf(customizer -> customizer.disable())
         .authorizeHttpRequests(request -> request
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
+            .permitAll()
             .requestMatchers("/api/users/register", "/api/users/login")
             .permitAll()
             .anyRequest()
             .authenticated())
-        .httpBasic(Customizer.withDefaults())
+        // .httpBasic(Customizer.withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
