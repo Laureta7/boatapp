@@ -1,6 +1,5 @@
 package com.rogerhr.boatapp.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,22 +15,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.rogerhr.boatapp.filter.JwtFilter;
 import com.rogerhr.boatapp.service.MyUserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-  @Autowired
-  private MyUserDetailsService userDetailsService;
+  private final MyUserDetailsService userDetailsService;
 
-  @Autowired
-  private JwtFilter jwtFilter;
+  private final JwtFilter jwtFilter;
+
+  public SecurityConfig(MyUserDetailsService userDetailsService, JwtFilter jwtFilter) {
+    this.userDetailsService = userDetailsService;
+    this.jwtFilter = jwtFilter;
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     return http
-        .csrf(customizer -> customizer.disable())
+        .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(request -> request
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
             .permitAll()

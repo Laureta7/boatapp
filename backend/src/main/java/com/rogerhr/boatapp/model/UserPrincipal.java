@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
 
-  private Users user;
+  // Use transient to prevent serialization of the user object
+  private transient Users user;
 
+  // Constructor
   public UserPrincipal(Users user) {
     this.user = user;
   }
@@ -33,25 +35,21 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
     return true;
   }
 

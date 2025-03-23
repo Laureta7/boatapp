@@ -1,6 +1,5 @@
 package com.rogerhr.boatapp.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +16,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/users")
 public class UserController {
 
-  @Autowired
   private UserService service;
+
+  public UserController(UserService service) {
+    this.service = service;
+  }
 
   @Operation(summary = "Register user", description = "No authentication required")
   @PostMapping("/register")

@@ -18,11 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BoatService {
 
-  @Autowired
-  private BoatRepository boatRepository;
+  private final BoatRepository boatRepository;
+
+  private final BoatMapper boatMapper;
 
   @Autowired
-  private BoatMapper boatMapper;
+  public BoatService(BoatRepository boatRepository, BoatMapper boatMapper) {
+    this.boatRepository = boatRepository;
+    this.boatMapper = boatMapper;
+  }
 
   // Get all boats
   public List<BoatResponseDTO> getAllBoats() {

@@ -15,16 +15,20 @@ import jakarta.validation.Valid;
 @Service
 public class UserService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
+  private final JWTService jwtService;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final AuthenticationManager authManager;
 
   @Autowired
-  private JWTService jwtService;
-
-  private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
-
-  @Autowired
-  private AuthenticationManager authManager;
+  public UserService(UserRepository userRepository,
+      JWTService jwtService,
+      AuthenticationManager authManager) {
+    this.userRepository = userRepository;
+    this.jwtService = jwtService;
+    this.bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
+    this.authManager = authManager;
+  }
 
   public Users register(Users user) {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -34,12 +38,8 @@ public class UserService {
   public String verifyUser(@Valid Users user) {
     Authentication authentication = authManager
         .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-
     if (authentication.isAuthenticated())
       return jwtService.generateToken(user.getUsername());
-
     return "User is not authenticated";
-
   }
-
 }
