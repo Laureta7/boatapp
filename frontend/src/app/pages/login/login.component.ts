@@ -12,6 +12,7 @@ import { UbInputDirective } from '@components/ui/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UbButtonDirective } from '@components/ui/button';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { AuthService } from '@app/services/auth-service.service';
 
 @Component({
   selector: 'app-login',
@@ -35,9 +36,12 @@ export class LoginComponent {
   title = 'login';
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+  ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Email field with validations
+      username: ['', [Validators.required]], // username field with validations
       password: ['', Validators.required], // Password field with validation
     });
   }
@@ -45,8 +49,17 @@ export class LoginComponent {
   login(event: Event) {
     event.preventDefault(); // Prevent page reload
     if (this.loginForm.valid) {
-      console.log('Email:', this.loginForm.value.email);
-      console.log('Password:', this.loginForm.value.password);
+      const { username, password } = this.loginForm.value;
+      this.authService.login(username, password).subscribe({
+        next: (response) => {
+          this.authService.storeToken(response.token);
+          console.log('Login successful'); // Log success
+          // Redirect to another route, if necessary
+        },
+        error: (err) => {
+          console.error('Login failed', err); // Handle errors appropriately
+        },
+      });
     } else {
       console.error('Form is not valid');
     }
