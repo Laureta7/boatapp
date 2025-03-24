@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 export interface LoginResponse {
@@ -15,7 +15,9 @@ export interface LoginResponse {
 export class AuthService {
   private apiUrl = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   cookieService = inject(CookieService);
 
   constructor(
@@ -23,6 +25,7 @@ export class AuthService {
     private router: Router,
   ) {}
 
+  // Log in method to post credentials and receive response with headers
   login(
     username: string,
     password: string,
@@ -40,11 +43,11 @@ export class AuthService {
     );
   }
 
-  // Login processing and authenticated state management
+  // Handle login processing and manage authenticated state
   loginAndStore(username: string, password: string): void {
     this.login(username, password).subscribe({
-      next: (response) => {
-        console.log('Login successful:', response);
+      next: () => {
+        // The cookie is set automatically by the backend in the response
         this.isAuthenticatedSubject.next(true);
         this.router.navigate(['/']);
       },
@@ -55,31 +58,25 @@ export class AuthService {
     });
   }
 
-  // Check JWT token validity
-  checkAuthenticationStatus(): void {
-    this.http
-      .get(`${this.apiUrl}/verify-token`, {
-        withCredentials: true,
-        observe: 'response',
-      })
-      .subscribe({
-        next: (response) => {
-          if (response.status === 200) {
-            this.isAuthenticatedSubject.next(true);
-          } else {
-            this.logout();
-          }
-        },
-        error: (error) => {
-          console.error('Erreur de vérification du token :', error);
-          this.logout();
-        },
-      });
+  checkAuthenticationStatus(): Observable<boolean> {
+    return this.http
+      .get(`${this.apiUrl}/users/verify-token`, { withCredentials: true })
+      .pipe(
+        map(() => {
+          this.isAuthenticatedSubject.next(true);
+          return true;
+        }),
+        catchError(() => {
+          this.isAuthenticatedSubject.next(false);
+          return of(false);
+        }),
+      );
   }
 
+  // Logout logic
   logout(): void {
-    this.cookieService.delete('token');
+    // Handle server-side logout if required, or just navigate
     this.isAuthenticatedSubject.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']); // Redirect to login page
   }
 }

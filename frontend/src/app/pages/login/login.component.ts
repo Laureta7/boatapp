@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   UbCardDescriptionDirective,
@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UbButtonDirective } from '@components/ui/button';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { AuthService } from '@app/services/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -27,15 +28,16 @@ import { AuthService } from '@app/services/auth-service.service';
     UbCardFooterDirective,
     UbInputDirective,
     UbButtonDirective,
-    ReactiveFormsModule, // Import ReactiveFormsModule here
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'], // Ensure this is also corrected
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   title = 'login';
   loginForm: FormGroup;
 
+  private router = inject(Router);
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -43,6 +45,13 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]], // username field with validations
       password: ['', Validators.required], // Password field with validation
+    });
+  }
+  ngOnInit(): void {
+    this.authService.checkAuthenticationStatus().subscribe((authenticated) => {
+      if (authenticated) {
+        this.router.navigate(['/']);
+      }
     });
   }
 
