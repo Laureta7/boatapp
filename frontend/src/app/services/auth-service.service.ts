@@ -75,7 +75,9 @@ export class AuthService {
 
   // Logout logic
   logout(): void {
+    console.log('Logging out');
     // Handle server-side logout if required, or just navigate
+    this.cookieService.delete('token');
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']); // Redirect to login page
   }
