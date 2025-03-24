@@ -1,36 +1,155 @@
 <div class="container mx-auto p-4">
-  <div *ngIf="boat" ubCard class="max-w-md w-full g">
-    <div ubCardHeader class="p-6 border-b">
+  <div *ngIf="boat" ubCard class="max-w-md w-full">
+    <div ubCardHeader class="p-4 border-b">
       <h3 ubCardTitle class="text-2xl font-bold mb-2">
-        {{ boat.ownerName }}
+        {{ isEditMode ? "Edit Boat" : boat.ownerName }}
       </h3>
-      <p ubCardDescription class="text-muted-foreground mb-4">
+      <p
+        ubCardDescription
+        class="text-muted-foreground mb-4"
+        *ngIf="!isEditMode"
+      >
         {{ boat.description }}
       </p>
     </div>
-    <div ubCardContent class="p-6">
-      <p ubCardDescription class="text-lg mb-2">
-        <strong>Year:</strong> {{ boat.year }}
-      </p>
-      <p ubCardDescription class="text-lg mb-2">
-        <strong>Length:</strong> {{ boat.length }} feet
-      </p>
-      <p ubCardDescription class="text-lg mb-2">
-        <strong>Price:</strong> ${{ boat.price | number }}
-      </p>
-      <p ubCardDescription class="text-lg mb-4">
-        <strong>Registration Number:</strong> {{ boat.registrationNumber }}
-      </p>
-    </div>
-    <div ubCardFooter class="flex justify-end p-6 border-t">
-      <button ubButton variant="outline" (click)="goBack()" class="mr-2">
-        Back to Boats List
-      </button>
-      <button ubButton (click)="editBoat()">Edit Boat</button>
-    </div>
+
+    <form
+      *ngIf="isEditMode; else viewMode"
+      [formGroup]="boatForm"
+      (ngSubmit)="saveBoat()"
+      class="flex flex-col space-y-4"
+    >
+      <div>
+        <label for="ownerName" class="block text-sm font-medium text-gray-700"
+          >Propriétaire</label
+        >
+        <input
+          type="text"
+          id="ownerName"
+          ubInput
+          formControlName="ownerName"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700"
+          >Description</label
+        >
+        <textarea
+          id="description"
+          ubInput
+          formControlName="description"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        ></textarea>
+      </div>
+      <div>
+        <label for="year" class="block text-sm font-medium text-gray-700"
+          >Année</label
+        >
+        <input
+          type="number"
+          id="year"
+          ubInput
+          formControlName="year"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label for="length" class="block text-sm font-medium text-gray-700"
+          >Longueur</label
+        >
+        <input
+          type="number"
+          id="length"
+          ubInput
+          formControlName="length"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label for="price" class="block text-sm font-medium text-gray-700"
+          >Prix</label
+        >
+        <input
+          type="number"
+          id="price"
+          ubInput
+          formControlName="price"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label
+          for="registrationNumber"
+          class="block text-sm font-medium text-gray-700"
+          >Numéro d'immatriculation</label
+        >
+        <input
+          type="text"
+          id="registrationNumber"
+          ubInput
+          formControlName="registrationNumber"
+          class="mt-1 block w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+      <div class="flex justify-end">
+        <button ubButton type="button" (click)="toggleEditMode()" class="mr-2">
+          Annuler
+        </button>
+        <button
+          ubButton
+          type="submit"
+          [disabled]="boatForm.pristine"
+          class="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </form>
+
+    <ng-template #viewMode>
+      <div ubCardContent class="p-6">
+        <p ubCardDescription class="text-lg mb-2">
+          <strong>Description:</strong> {{ boat.description }}
+        </p>
+        <p ubCardDescription class="text-lg mb-2">
+          <strong>Année</strong> {{ boat.year }}
+        </p>
+        <p ubCardDescription class="text-lg mb-2">
+          <strong>Longueur </strong> {{ boat.length }} mètres
+        </p>
+        <p ubCardDescription class="text-lg mb-4">
+          <strong>Prix </strong> ${{ boat.price | number }}
+        </p>
+        <p ubCardDescription class="text-lg mb-2">
+          <strong>Numéro d'immatriculation</strong>
+          {{ boat.registrationNumber }}
+        </p>
+      </div>
+
+      <div ubCardFooter class="flex justify-end p-6 border-t">
+        <button ubButton (click)="goBack()" class="mr-2">
+          Liste des bateaux
+        </button>
+        <button
+          ubButton
+          variant="outline"
+          (click)="toggleEditMode()"
+          class="mr-2"
+        >
+          Modifier
+        </button>
+      </div>
+    </ng-template>
   </div>
 
   <div *ngIf="!boat" class="flex justify-center items-center h-screen">
-    <p class="text-xl text-gray-500">Loading boat details...</p>
+    <p class="text-xl text-gray-500">Chargement ...</p>
   </div>
 </div>

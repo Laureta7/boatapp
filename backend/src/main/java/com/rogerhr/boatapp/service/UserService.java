@@ -2,11 +2,13 @@ package com.rogerhr.boatapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.rogerhr.boatapp.model.LoginResponse;
 import com.rogerhr.boatapp.model.Users;
@@ -48,13 +50,13 @@ public class UserService {
 
         // Create a cookie for the JWT
         Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
+        // cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
         cookie.setSecure(false); // Use HTTPS only
         cookie.setPath("/"); // Make cookie accessible on all routes
         cookie.setMaxAge(3600); // Set expiration time for the cookie (in seconds)
 
         response.addCookie(cookie); // Add the cookie to the response
-        return ResponseEntity.ok(new LoginResponse("Login successful")); // Optionally, return a response
+        return ResponseEntity.ok(new LoginResponse("Login successful " + token));
       } else {
         return ResponseEntity.status(403).body(new LoginResponse("User is not authenticated"));
 
@@ -64,4 +66,5 @@ public class UserService {
                                                                                               // appropriately
     }
   }
+
 }

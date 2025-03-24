@@ -1,8 +1,10 @@
 package com.rogerhr.boatapp.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,11 +39,15 @@ public class UserController {
   @Operation(summary = "Login user", description = "No authentication required")
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody @Valid Users user, HttpServletResponse response) {
-    // Log the request path and method if you have a logging mechanism
-    System.out.println("Received login request: " + user.getUsername());
 
-    // Validate the user and return the JSON response with token
     return service.verifyUser(user, response);
+  }
+
+  @GetMapping("/verify-token")
+  public ResponseEntity<LoginResponse> verifyToken() {
+
+    return ResponseEntity.ok(new LoginResponse("Valid token"));
+
   }
 
 }

@@ -1,10 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Boat } from '@interfaces/boat';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import {
   UbCardDescriptionDirective,
   UbCardDirective,
@@ -14,10 +18,11 @@ import {
   UbCardTitleDirective,
 } from '@components/ui/card';
 import { UbButtonDirective } from '@components/ui/button';
-import { UbInputDirective } from '@components/ui/input';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-boat-detail',
+  standalone: true,
   imports: [
     CommonModule,
     UbCardDirective,
@@ -27,31 +32,50 @@ import { UbInputDirective } from '@components/ui/input';
     UbCardContentDirective,
     UbCardFooterDirective,
     UbButtonDirective,
-    UbButtonDirective,
+    ReactiveFormsModule,
   ],
+
   templateUrl: './boat-detail.component.html',
-  styleUrls: ['./boat-detail.component.css'],
 })
 export class BoatDetailComponent implements OnInit {
-  boatId: string = '';
   boat!: Boat;
-  private apiUrl = environment.apiUrl;
+  boatForm: FormGroup;
+  isEditMode: boolean = false; // État pour le mode d'édition
 
-  private router = inject(Router);
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private http: HttpClient,
-  ) {}
+  ) {
+    // Initialisation du formulaire
+    this.boatForm = this.fb.group({
+      ownerName: ['', Validators.required],
+      description: ['', Validators.required],
+      year: [
+        '',
+        [
+          Validators.required,
+          Validators.min(1900),
+          Validators.max(new Date().getFullYear()),
+        ],
+      ],
+      length: ['', [Validators.required, Validators.min(1)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      registrationNumber: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
-    this.boatId = this.route.snapshot.paramMap.get('id') || '';
-    this.getBoatDetails(this.boatId);
+    const boatId = this.route.snapshot.paramMap.get('id')!;
+    this.getBoatDetails(boatId);
   }
 
   getBoatDetails(id: string): void {
-    this.http.get<Boat>(`${this.apiUrl}/boats/${id}`).subscribe({
+    this.http.get<Boat>(`${environment.apiUrl}/boats/${id}`).subscribe({
       next: (response) => {
         this.boat = response;
+        this.boatForm.patchValue(response); // Remplit le formulaire avec les données du bateau
       },
       error: (error) => {
         console.error('Error fetching boat details:', error);
@@ -59,11 +83,40 @@ export class BoatDetailComponent implements OnInit {
     });
   }
 
-  goBack(): void {
-    this.router.navigate(['/boats']); // Redirection vers la liste des bateaux
+  toggleEditMode(): void {
+    if (this.isEditMode) {
+      this.resetForm();
+    }
+    this.isEditMode = !this.isEditMode;
   }
 
-  editBoat(): void {
-    // this.router.navigate(['/boats/edit', this.boat.id]); // Redirection vers l'édition
+  resetForm(): void {
+    this.boatForm.reset();
+    this.getBoatDetails(this.boat.id);
+  }
+
+  saveBoat(): void {
+    if (this.boatForm.valid) {
+      const updatedBoat = this.boatForm.value;
+
+      this.http
+        .put(`${environment.apiUrl}/boats/${this.boat.id}`, updatedBoat)
+        .subscribe({
+          next: () => {
+            // Update boat details with new values
+            this.boat = { ...this.boat, ...updatedBoat };
+            this.isEditMode = false;
+          },
+          error: (error) => {
+            console.error('Error updating boat details:', error);
+          },
+        });
+    } else {
+      console.error('Form is not valid');
+    }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/boats']);
   }
 }
