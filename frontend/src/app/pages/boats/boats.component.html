@@ -1,1 +1,19 @@
-<p>boats works!</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+  <div *ngFor="let boat of boats" ubCard class="max-w-sm w-full">
+    <div ubCardHeader>
+      <h3 ubCardTitle class="text-xl font-bold">{{ boat.ownerName }}</h3>
+      <p ubCardDescription class="text-muted-foreground">
+        {{ boat.description }}
+      </p>
+    </div>
+    <div ubCardContent>
+      <p ubCardDescription>Year: {{ boat.year }}</p>
+      <p ubCardDescription>Price: ${{ boat.price | number }}</p>
+    </div>
+    <div ubCardFooter class="flex justify-between">
+      <button ubButton variant="outline" (click)="goToBoat(boat.id)">
+        View Details
+      </button>
+    </div>
+  </div>
+</div>

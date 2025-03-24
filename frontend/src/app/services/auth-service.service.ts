@@ -49,7 +49,7 @@ export class AuthService {
       next: () => {
         // The cookie is set automatically by the backend in the response
         this.isAuthenticatedSubject.next(true);
-        this.router.navigate(['/']);
+        this.router.navigate(['/boats']);
       },
       error: (error) => {
         console.error('Login failed', error);

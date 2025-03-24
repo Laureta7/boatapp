@@ -29,7 +29,8 @@
       "@utils/*": ["src/app/utils/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/app/components/*"],
-      "@guards/*": ["src/app/guards/*"]
+      "@guards/*": ["src/app/guards/*"],
+      "@interfaces/*": ["src/app/interfaces/*"]
     }
   },
   "angularCompilerOptions": {

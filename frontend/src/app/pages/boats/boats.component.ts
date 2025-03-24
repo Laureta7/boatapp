@@ -1,19 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
-
-interface Boat {
-  id: string;
-  description: string;
-  year: number;
-  length: number;
-  ownerName: string;
-  price: number;
-  registrationNumber: string;
-}
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import {
+  UbCardDescriptionDirective,
+  UbCardDirective,
+  UbCardContentDirective,
+  UbCardFooterDirective,
+  UbCardHeaderDirective,
+  UbCardTitleDirective,
+} from '@components/ui/card';
+import { UbButtonDirective } from '@components/ui/button';
+import { Boat } from '@interfaces/boat';
 
 @Component({
   selector: 'app-boats',
+  imports: [
+    CommonModule,
+    UbCardDirective,
+    UbCardHeaderDirective,
+    UbCardTitleDirective,
+    UbCardDescriptionDirective,
+    UbCardContentDirective,
+    UbCardFooterDirective,
+    UbButtonDirective,
+  ],
+
   templateUrl: './boats.component.html',
   styleUrls: ['./boats.component.css'],
 })
@@ -22,6 +35,7 @@ export class BoatsComponent implements OnInit {
   boats: Boat[] = [];
 
   private apiUrl = environment.apiUrl;
+  private router = inject(Router);
 
   constructor(private http: HttpClient) {}
 
@@ -39,5 +53,10 @@ export class BoatsComponent implements OnInit {
         console.error('Error fetching boats:', error);
       },
     });
+  }
+
+  goToBoat(id: string): void {
+    console.log('Navigating to boat:', id);
+    this.router.navigate(['/boats', id]);
   }
 }
