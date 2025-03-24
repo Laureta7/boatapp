@@ -25,6 +25,9 @@ import com.rogerhr.boatapp.dto.BoatRequestDTO;
 import com.rogerhr.boatapp.dto.BoatResponseDTO;
 import com.rogerhr.boatapp.service.BoatService;
 import com.rogerhr.boatapp.service.JWTService;
+
+import jakarta.servlet.http.Cookie;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +102,7 @@ class BoatControllerTest {
     System.out.println("Boats: " + boats.size());
     System.out.println("Boat: " + boatResponseDTO.getName());
     mockMvc.perform(get("/api/boats")
-        .header("Authorization", "Bearer " + token))
+        .cookie(new Cookie("token", token)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.size()", is(1)))
         .andExpect(jsonPath("$[0].id").value(boatId.toString()))
@@ -113,7 +116,7 @@ class BoatControllerTest {
     when(boatService.getBoatById(boatId)).thenReturn(boatResponseDTO);
 
     mockMvc.perform(get("/api/boats/{id}", boatId)
-        .header("Authorization", "Bearer " + token))
+        .cookie(new Cookie("token", token)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(boatId.toString()))
         .andExpect(jsonPath("$.name").value(boatRequestDTO.getName()));
@@ -126,7 +129,7 @@ class BoatControllerTest {
     when(boatService.createBoat(any(BoatRequestDTO.class))).thenReturn(boatResponseDTO);
 
     mockMvc.perform(post("/api/boats")
-        .header("Authorization", "Bearer " + token)
+        .cookie(new Cookie("token", token))
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(boatRequestDTO)))
         .andExpect(status().isCreated())
@@ -142,7 +145,7 @@ class BoatControllerTest {
     when(boatService.updateBoat(eq(boatId), any(BoatRequestDTO.class))).thenReturn(boatResponseDTO);
 
     mockMvc.perform(put("/api/boats/{id}", boatId)
-        .header("Authorization", "Bearer " + token)
+        .cookie(new Cookie("token", token))
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(boatRequestDTO)))
         .andExpect(status().isOk())
@@ -158,7 +161,7 @@ class BoatControllerTest {
     doNothing().when(boatService).deleteBoat(boatId);
 
     mockMvc.perform(delete("/api/boats/{id}", boatId)
-        .header("Authorization", "Bearer " + token))
+        .cookie(new Cookie("token", token)))
         .andExpect(status().isNoContent());
 
     verify(boatService, times(1)).deleteBoat(boatId);
