@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface LoginResponse {
   message: string;
@@ -13,25 +14,23 @@ export interface LoginResponse {
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
-    this.hasToken(),
-  );
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  cookieService = inject(CookieService);
 
   constructor(
     private http: HttpClient,
     private router: Router,
   ) {}
 
-  // Log in and get response including headers
   login(
     username: string,
     password: string,
   ): Observable<HttpResponse<LoginResponse>> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      withCredentials: true, // Necessary for cookie handling
-      observe: 'response' as 'response', // Get full response
+      withCredentials: true,
+      observe: 'response' as const,
     };
 
     return this.http.post<LoginResponse>(
@@ -41,37 +40,46 @@ export class AuthService {
     );
   }
 
-  // Handle login processing
+  // Login processing and authenticated state management
   loginAndStore(username: string, password: string): void {
     this.login(username, password).subscribe({
       next: (response) => {
-        console.log('Response from server:', response);
-        console.log('Response headers:', response.headers.keys());
-
-        // Check for cookie presence in headers (not needed if backend sets it correctly)
-        // Instead of manually parsing response, you rely on servlet's response to send cookie automatically
+        console.log('Login successful:', response);
         this.isAuthenticatedSubject.next(true);
-        this.router.navigate(['/dashboard']); // Navigate on successful login
+        this.router.navigate(['/']);
       },
       error: (error) => {
-        console.error('Login failed', error); // Handle errors
+        console.error('Login failed', error);
         this.isAuthenticatedSubject.next(false);
       },
     });
   }
 
-  // Check authentication status
-  isAuthenticated(): boolean {
-    return !!document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token=')); // Check if token cookie exists
+  // Check JWT token validity
+  checkAuthenticationStatus(): void {
+    this.http
+      .get(`${this.apiUrl}/verify-token`, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.isAuthenticatedSubject.next(true);
+          } else {
+            this.logout();
+          }
+        },
+        error: (error) => {
+          console.error('Erreur de vérification du token :', error);
+          this.logout();
+        },
+      });
   }
 
-  hasToken(): boolean {
-    return !!document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token=')); // Check if token cookie exists
+  logout(): void {
+    this.cookieService.delete('token');
+    this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/login']);
   }
-
-  // Logout logic: delete cookie, redirect, etc.
 }
