@@ -116,6 +116,17 @@ export class BoatDetailComponent implements OnInit {
     }
   }
 
+  deleteBoat(): void {
+    this.http.delete(`${environment.apiUrl}/boats/${this.boat.id}`).subscribe({
+      next: () => {
+        this.router.navigate(['/boats']);
+      },
+      error: (error) => {
+        console.error('Error deleting boat:', error);
+      },
+    });
+  }
+
   goBack(): void {
     this.router.navigate(['/boats']);
   }
