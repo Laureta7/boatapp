@@ -1,19 +1,39 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-  <div *ngFor="let boat of boats" ubCard class="max-w-sm w-full">
-    <div ubCardHeader>
-      <h3 ubCardTitle class="text-xl font-bold">{{ boat.name }}</h3>
-      <p ubCardDescription class="text-muted-foreground">
-        {{ boat.description }}
-      </p>
-    </div>
-    <div ubCardContent>
-      <p ubCardDescription>Year: {{ boat.year }}</p>
-      <p ubCardDescription>Price: ${{ boat.price | number }}</p>
-    </div>
-    <div ubCardFooter class="flex justify-between">
-      <button ubButton variant="outline" (click)="goToBoat(boat.id)">
-        View Details
-      </button>
+<div class="container mx-auto p-4">
+  <button
+    ubButton
+    (click)="toggleAddBoatForm()"
+    class="mb-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+  >
+    Ajouter un Bateau
+  </button>
+
+  <div *ngIf="showAddBoatForm">
+    <app-add-boat
+      (boatAdded)="addBoatSuccess($event)"
+      (canceled)="handleCancel()"
+    ></app-add-boat>
+  </div>
+
+  <div
+    *ngIf="!showAddBoatForm"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+  >
+    <div *ngFor="let boat of boats" ubCard class="max-w-sm w-full">
+      <div ubCardHeader>
+        <h3 ubCardTitle class="text-xl font-bold">{{ boat.ownerName }}</h3>
+        <p ubCardDescription class="text-muted-foreground">
+          {{ boat.description }}
+        </p>
+      </div>
+      <div ubCardContent>
+        <p ubCardDescription>Year: {{ boat.year }}</p>
+        <p ubCardDescription>Price: ${{ boat.price | number }}</p>
+      </div>
+      <div ubCardFooter class="flex justify-between">
+        <button ubButton variant="outline" (click)="goToBoat(boat.id)">
+          View Details
+        </button>
+      </div>
     </div>
   </div>
 </div>

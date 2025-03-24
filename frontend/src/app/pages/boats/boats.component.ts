@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AddBoatComponent } from '@components/add-boat/add-boat.component';
 import {
   UbCardDescriptionDirective,
   UbCardDirective,
@@ -25,6 +26,7 @@ import { Boat } from '@interfaces/boat';
     UbCardContentDirective,
     UbCardFooterDirective,
     UbButtonDirective,
+    AddBoatComponent,
   ],
 
   templateUrl: './boats.component.html',
@@ -33,6 +35,7 @@ import { Boat } from '@interfaces/boat';
 export class BoatsComponent implements OnInit {
   title = 'boats';
   boats: Boat[] = [];
+  showAddBoatForm: boolean = false;
 
   private apiUrl = environment.apiUrl;
   private router = inject(Router);
@@ -47,7 +50,6 @@ export class BoatsComponent implements OnInit {
     this.http.get<Boat[]>(`${this.apiUrl}/boats`).subscribe({
       next: (response) => {
         this.boats = response;
-        console.log(this.boats);
       },
       error: (error) => {
         console.error('Error fetching boats:', error);
@@ -55,8 +57,19 @@ export class BoatsComponent implements OnInit {
     });
   }
 
+  toggleAddBoatForm(): void {
+    this.showAddBoatForm = !this.showAddBoatForm;
+  }
+
   goToBoat(id: string): void {
-    console.log('Navigating to boat:', id);
     this.router.navigate(['/boats', id]);
+  }
+
+  addBoatSuccess(boat: Boat): void {
+    this.goToBoat(boat.id);
+  }
+
+  handleCancel(): void {
+    this.showAddBoatForm = false;
   }
 }

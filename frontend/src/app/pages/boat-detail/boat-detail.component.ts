@@ -40,7 +40,7 @@ import { CommonModule } from '@angular/common';
 export class BoatDetailComponent implements OnInit {
   boat!: Boat;
   boatForm: FormGroup;
-  isEditMode: boolean = false; // État pour le mode d'édition
+  isEditMode: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +48,7 @@ export class BoatDetailComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
   ) {
-    // Initialisation du formulaire
+    // Init form
     this.boatForm = this.fb.group({
       name: ['', Validators.required],
       ownerName: ['', Validators.required],
@@ -76,7 +76,7 @@ export class BoatDetailComponent implements OnInit {
     this.http.get<Boat>(`${environment.apiUrl}/boats/${id}`).subscribe({
       next: (response) => {
         this.boat = response;
-        this.boatForm.patchValue(response); // Remplit le formulaire avec les données du bateau
+        this.boatForm.patchValue(response); //  Fill form
       },
       error: (error) => {
         console.error('Error fetching boat details:', error);
