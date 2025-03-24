@@ -4,10 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-
-export interface LoginResponse {
-  message: string;
-}
+import { LoginResponse } from '@interfaces/login-response';
 
 @Injectable({
   providedIn: 'root',

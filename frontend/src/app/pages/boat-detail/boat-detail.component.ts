@@ -22,7 +22,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-boat-detail',
-  standalone: true,
   imports: [
     CommonModule,
     UbCardDirective,

@@ -5,7 +5,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Boat } from '@interfaces/boat';
@@ -17,6 +16,7 @@ import {
 } from '@components/ui/card';
 import { UbButtonDirective } from '@components/ui/button';
 import { CommonModule } from '@angular/common';
+import { BoatRequest } from '@app/interfaces/boat-request';
 
 @Component({
   selector: 'app-add-boat',
@@ -60,11 +60,11 @@ export class AddBoatComponent {
 
   addBoat(): void {
     if (this.boatForm.valid) {
-      const newBoat: Boat = this.boatForm.value;
+      const newBoat: BoatRequest = this.boatForm.value;
       this.http.post<Boat>(`${environment.apiUrl}/boats`, newBoat).subscribe({
         next: (response: Boat) => {
-          this.boatAdded.emit(response); // Emit event with new boat
-          this.boatForm.reset(); // Reset form
+          this.boatAdded.emit(response);
+          this.boatForm.reset();
         },
         error: (error) => {
           console.error('Error adding boat:', error);
