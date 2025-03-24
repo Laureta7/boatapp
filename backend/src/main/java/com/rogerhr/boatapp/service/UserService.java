@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.rogerhr.boatapp.exception.UsernameAlreadyExistsException;
 import com.rogerhr.boatapp.model.LoginResponse;
 import com.rogerhr.boatapp.model.Users;
 import com.rogerhr.boatapp.repository.UserRepository;
@@ -35,6 +36,10 @@ public class UserService {
   }
 
   public Users register(Users user) {
+    // Check if the username already exists
+    if (userRepository.existsByUsername(user.getUsername())) {
+      throw new UsernameAlreadyExistsException("Username is already taken");
+    }
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     return userRepository.save(user);
   }

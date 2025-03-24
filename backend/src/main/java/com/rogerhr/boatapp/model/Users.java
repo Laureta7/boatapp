@@ -1,6 +1,8 @@
 package com.rogerhr.boatapp.model;
 
 import java.util.UUID;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity; // Ensure the class is marked as an entity
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,13 +26,12 @@ public class Users {
   private UUID id;
 
   @NotNull(message = "Username cannot be null")
+  @Column(unique = true)
   private String username;
 
   @NotNull(message = "Password cannot be null")
   @Size(min = 2, message = "Password must be at least 8 characters long")
   private String password;
-
-  private String role;
 
   // Getters and Setters are auto-generated with Lombok
 }
