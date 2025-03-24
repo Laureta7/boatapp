@@ -1,4 +1,3 @@
-# Use an official Amazon Corretto JDK 21 image based on Alpine for a smaller footprint
 FROM amazoncorretto:21.0.6-alpine3.21
 
 # Set the working directory in the container

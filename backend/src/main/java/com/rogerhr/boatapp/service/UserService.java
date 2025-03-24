@@ -52,10 +52,9 @@ public class UserService {
         cookie.setSecure(true); // Use HTTPS only
         cookie.setPath("/"); // Make cookie accessible on all routes
         cookie.setMaxAge(3600); // Set expiration time for the cookie (in seconds)
+
         response.addCookie(cookie); // Add the cookie to the response
-
         return ResponseEntity.ok(new LoginResponse("Login successful " + token));
-
       } else {
         return ResponseEntity.status(403).body(new LoginResponse("User is not authenticated"));
 
@@ -72,6 +71,7 @@ public class UserService {
     cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setMaxAge(0); // Set the max age to 0 to delete the cookie
+    response.addCookie(cookie);
 
     return ResponseEntity.ok(new LoginResponse("Logout successful "));
   }

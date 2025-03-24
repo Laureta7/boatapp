@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://your-production-api-url.com/api', // Production URL for the backend API
+  apiUrl: 'http://localhost:8080/api', // URL de votre backend pour le développement
 };
