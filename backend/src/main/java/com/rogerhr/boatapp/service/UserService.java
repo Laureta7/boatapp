@@ -50,7 +50,7 @@ public class UserService {
 
         // Create a cookie for the JWT
         Cookie cookie = new Cookie("token", token);
-        // cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
+        cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
         cookie.setSecure(false); // Use HTTPS only
         cookie.setPath("/"); // Make cookie accessible on all routes
         cookie.setMaxAge(3600); // Set expiration time for the cookie (in seconds)
@@ -65,6 +65,17 @@ public class UserService {
       return ResponseEntity.badRequest().body(new LoginResponse("Error: " + e.getMessage())); // Handle errors
                                                                                               // appropriately
     }
+  }
+
+  public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie("token", null);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false);
+    cookie.setPath("/");
+    cookie.setMaxAge(0); // Set the max age to 0 to delete the cookie
+    response.addCookie(cookie);
+
+    return ResponseEntity.ok(new LoginResponse("Logout successful "));
   }
 
 }

@@ -50,4 +50,9 @@ public class UserController {
 
   }
 
+  @PostMapping("/logout") // endpoint for logout
+  public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
+    return service.logout(response);
+  }
+
 }

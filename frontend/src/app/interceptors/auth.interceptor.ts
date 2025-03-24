@@ -5,30 +5,19 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { inject } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
-  const cookieService = inject(CookieService);
+  // Get the CookieService instance
 
-  const token = cookieService.get('token');
-  console.log('token:', token);
+  // Clone the request and set the 'withCredentials' flag to true
+  // This ensures that cookies are sent with the request
+  req = req.clone({
+    withCredentials: true, // ensure that credentials (cookies) are sent along with the request
+  });
 
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
-    });
-  } else {
-    req = req.clone({
-      withCredentials: true,
-    });
-  }
-
+  // Pass the modified request to the next handler
   return next(req);
 };

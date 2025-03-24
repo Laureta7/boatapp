@@ -75,10 +75,18 @@ export class AuthService {
 
   // Logout logic
   logout(): void {
-    console.log('Logging out');
-    // Handle server-side logout if required, or just navigate
-    this.cookieService.delete('token');
-    this.isAuthenticatedSubject.next(false);
-    this.router.navigate(['/login']); // Redirect to login page
+    this.http
+      .post(`${this.apiUrl}/users/logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          console.log('Logout successful');
+          this.isAuthenticatedSubject.next(false); // Update the authentication state
+          this.router.navigate(['/login']); // Redirect to login page
+        },
+        error: (error) => {
+          console.error('Logout failed', error);
+          // Optionally: Handle additional error scenarios (e.g., show a notification)
+        },
+      });
   }
 }
