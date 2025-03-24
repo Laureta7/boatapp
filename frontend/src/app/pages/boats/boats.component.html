@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
   <div *ngFor="let boat of boats" ubCard class="max-w-sm w-full">
     <div ubCardHeader>
-      <h3 ubCardTitle class="text-xl font-bold">{{ boat.ownerName }}</h3>
+      <h3 ubCardTitle class="text-xl font-bold">{{ boat.name }}</h3>
       <p ubCardDescription class="text-muted-foreground">
         {{ boat.description }}
       </p>

@@ -50,6 +50,7 @@ export class BoatDetailComponent implements OnInit {
   ) {
     // Initialisation du formulaire
     this.boatForm = this.fb.group({
+      name: ['', Validators.required],
       ownerName: ['', Validators.required],
       description: ['', Validators.required],
       year: [
