@@ -1,6 +1,6 @@
-import { computed, Directive, input } from '@angular/core'
+import { computed, Directive, input } from '@angular/core';
 
-import { cn } from '@app/lib/utils'
+import { cn } from '@app/lib/utils';
 
 export type InputType =
   | 'date'
@@ -12,9 +12,10 @@ export type InputType =
   | 'tel'
   | 'file'
   | 'search'
-  | 'text'
+  | 'text';
 
 @Directive({
+  // eslint-disable-next-line
   selector: '[ubInput]',
   standalone: true,
   host: {
@@ -23,8 +24,8 @@ export type InputType =
   },
 })
 export class UbInputDirective<Type extends InputType> {
-  readonly type = input.required<Type>()
-  readonly class = input<string>()
+  readonly type = input.required<Type>();
+  readonly class = input<string>();
 
   protected computedClass = computed(() =>
     cn(
@@ -33,5 +34,5 @@ export class UbInputDirective<Type extends InputType> {
       'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
       this.class(),
     ),
-  )
+  );
 }

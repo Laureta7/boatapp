@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'frontend';
-  isAuthenticated: boolean = false;
+  isAuthenticated = false;
   private subscription!: Subscription;
 
   constructor(private authService: AuthService) {}

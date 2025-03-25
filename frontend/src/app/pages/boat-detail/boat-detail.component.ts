@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
 export class BoatDetailComponent implements OnInit {
   boat!: Boat;
   boatForm: FormGroup;
-  isEditMode: boolean = false;
+  isEditMode = false;
 
   constructor(
     private fb: FormBuilder,

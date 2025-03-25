@@ -1,85 +1,94 @@
-import { computed, Directive, input } from '@angular/core'
+import { computed, Directive, input } from '@angular/core';
 
-import { cn } from '@app/lib/utils'
+import { cn } from '@app/lib/utils';
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'div[ubCard]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
   protected computedClass = computed(() =>
-    cn('bg-card text-card-foreground rounded-xl border shadow-sm', this.class()),
-  )
+    cn(
+      'bg-card text-card-foreground rounded-xl border shadow-sm',
+      this.class(),
+    ),
+  );
 }
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'div[ubCardHeader]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardHeaderDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
   protected computedClass = computed(() =>
     cn('flex flex-col gap-1.5 p-6', this.class()),
-  )
+  );
 }
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'h3[ubCardTitle]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardTitleDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
   protected computedClass = computed(() =>
     cn('leading-none font-semibold', this.class()),
-  )
+  );
 }
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'p[ubCardDescription]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardDescriptionDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
   protected computedClass = computed(() =>
     cn('text-muted-foreground text-sm', this.class()),
-  )
+  );
 }
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'div[ubCardContent]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardContentDirective {
-  readonly class = input<string>()
-  protected computedClass = computed(() => cn('p-6 pt-0', this.class()))
+  readonly class = input<string>();
+  protected computedClass = computed(() => cn('p-6 pt-0', this.class()));
 }
 
 @Directive({
   standalone: true,
+  // eslint-disable-next-line
   selector: 'div[ubCardFooter]',
   host: {
     '[class]': 'computedClass()',
   },
 })
 export class UbCardFooterDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
   protected computedClass = computed(() =>
     cn('flex items-center p-6 pt-0', this.class()),
-  )
+  );
 }

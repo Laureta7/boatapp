@@ -35,7 +35,7 @@ import { Boat } from '@interfaces/boat';
 export class BoatsComponent implements OnInit {
   title = 'boats';
   boats: Boat[] = [];
-  showAddBoatForm: boolean = false;
+  showAddBoatForm = false;
 
   private apiUrl = environment.apiUrl;
   private router = inject(Router);

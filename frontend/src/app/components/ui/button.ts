@@ -1,12 +1,12 @@
-import type { VariantProps } from 'class-variance-authority'
+import type { VariantProps } from 'class-variance-authority';
 
-import { computed, Directive, input } from '@angular/core'
+import { computed, Directive, input } from '@angular/core';
 
-import { cva } from 'class-variance-authority'
-import { cn } from '@app/lib/utils'
+import { cva } from 'class-variance-authority';
+import { cn } from '@app/lib/utils';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -33,14 +33,15 @@ export const buttonVariants = cva(
       size: 'default',
     },
   },
-)
+);
 
-type ButtonProps = VariantProps<typeof buttonVariants>
+type ButtonProps = VariantProps<typeof buttonVariants>;
 
-export type UbButtonSize = NonNullable<ButtonProps['size']>
-export type UbButtonVariant = NonNullable<ButtonProps['variant']>
+export type UbButtonSize = NonNullable<ButtonProps['size']>;
+export type UbButtonVariant = NonNullable<ButtonProps['variant']>;
 
 @Directive({
+  // eslint-disable-next-line
   selector: '[ubButton]',
   standalone: true,
   host: {
@@ -48,11 +49,11 @@ export type UbButtonVariant = NonNullable<ButtonProps['variant']>
   },
 })
 export class UbButtonDirective {
-  readonly class = input<string>()
+  readonly class = input<string>();
 
-  readonly variant = input<UbButtonVariant>('default')
+  readonly variant = input<UbButtonVariant>('default');
 
-  readonly size = input<UbButtonSize>('default')
+  readonly size = input<UbButtonSize>('default');
 
   protected computedClass = computed(() =>
     cn(
@@ -62,5 +63,5 @@ export class UbButtonDirective {
         class: this.class(),
       }),
     ),
-  )
+  );
 }
