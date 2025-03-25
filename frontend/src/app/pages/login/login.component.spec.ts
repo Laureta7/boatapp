@@ -95,7 +95,7 @@ describe('LoginComponent', () => {
     component.ngOnInit(); // Explicitly call ngOnInit
     tick(); // Simulate the passage of time for async operations
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/boats']);
   }));
 
   it('should not navigate if not authenticated', fakeAsync(() => {

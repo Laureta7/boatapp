@@ -50,7 +50,7 @@ export class LoginComponent {
   ngOnInit(): void {
     this.authService.checkAuthenticationStatus().subscribe((authenticated) => {
       if (authenticated) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/boats']);
       }
     });
   }
