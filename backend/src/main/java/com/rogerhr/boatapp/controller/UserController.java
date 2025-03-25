@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rogerhr.boatapp.dto.UserCreateDTO;
+import com.rogerhr.boatapp.dto.UserDTO;
 import com.rogerhr.boatapp.model.LoginResponse;
 import com.rogerhr.boatapp.model.Users;
 import com.rogerhr.boatapp.service.UserService;
@@ -28,16 +30,15 @@ public class UserController {
 
   @Operation(summary = "Register user", description = "No authentication required")
   @PostMapping("/register")
-  public Users register(@Validated @RequestBody Users user) {
-
-    return service.register(user);
+  public UserDTO register(@Validated @RequestBody UserCreateDTO userCreateDTO) {
+    return service.register(userCreateDTO);
   }
 
   @Operation(summary = "Login user", description = "No authentication required")
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(@RequestBody @Valid Users user, HttpServletResponse response) {
-
-    return service.verifyUser(user, response);
+  public ResponseEntity<LoginResponse> login(@Valid @RequestBody UserCreateDTO userCreateDTO,
+      HttpServletResponse response) {
+    return service.verifyUser(userCreateDTO, response);
   }
 
   @GetMapping("/verify-token")

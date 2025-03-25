@@ -8,7 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.rogerhr.boatapp.dto.UserCreateDTO;
+import com.rogerhr.boatapp.dto.UserDTO;
 import com.rogerhr.boatapp.exception.UsernameAlreadyExistsException;
+import com.rogerhr.boatapp.mapper.UserMapper;
 import com.rogerhr.boatapp.model.LoginResponse;
 import com.rogerhr.boatapp.model.Users;
 import com.rogerhr.boatapp.repository.UserRepository;
@@ -35,38 +38,44 @@ public class UserService {
     this.authManager = authManager;
   }
 
-  public Users register(Users user) {
-    // Check if the username already exists
-    if (userRepository.existsByUsername(user.getUsername())) {
+  public UserDTO register(UserCreateDTO userCreateDTO) {
+    // Check if username already exists
+    if (userRepository.existsByUsername(userCreateDTO.getUsername())) {
       throw new UsernameAlreadyExistsException("Username is already taken");
     }
-    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-    return userRepository.save(user);
+
+    // Mapper
+    Users newUser = UserMapper.toUser(userCreateDTO);
+    newUser.setPassword(bCryptPasswordEncoder.encode(userCreateDTO.getPassword())); // Hash du password
+
+    Users savedUser = userRepository.save(newUser);
+
+    // Return without password
+    return UserMapper.toUserDTO(savedUser);
   }
 
-  public ResponseEntity<LoginResponse> verifyUser(@Valid Users user, HttpServletResponse response) {
+  public ResponseEntity<LoginResponse> verifyUser(@Valid UserCreateDTO userCreateDTO, HttpServletResponse response) {
     try {
-      Authentication authentication = authManager
-          .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+      Authentication authentication = authManager.authenticate(
+          new UsernamePasswordAuthenticationToken(userCreateDTO.getUsername(), userCreateDTO.getPassword()));
+
       if (authentication.isAuthenticated()) {
-        String token = jwtService.generateToken(user.getUsername());
+        String token = jwtService.generateToken(userCreateDTO.getUsername());
 
-        // Create a cookie for the JWT
+        // Create a cookie
         Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true); // Prevents JavaScript access to the cookie
-        cookie.setSecure(true); // Use HTTPS only
-        cookie.setPath("/"); // Make cookie accessible on all routes
-        cookie.setMaxAge(3600); // Set expiration time for the cookie (in seconds)
+        cookie.setHttpOnly(true); // No javascript access
+        cookie.setSecure(true); // HTTPS Only
+        cookie.setPath("/"); // Allow all paths
+        cookie.setMaxAge(3600); // (1h) = token
 
-        response.addCookie(cookie); // Add the cookie to the response
-        return ResponseEntity.ok(new LoginResponse("Login successful " + token));
+        response.addCookie(cookie); // Ajoute le cookie à la réponse HTTP
+        return ResponseEntity.ok(new LoginResponse("Login successful" + token));
       } else {
         return ResponseEntity.status(403).body(new LoginResponse("User is not authenticated"));
-
       }
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new LoginResponse("Error: " + e.getMessage())); // Handle errors
-                                                                                              // appropriately
+      return ResponseEntity.badRequest().body(new LoginResponse("Error: " + e.getMessage()));
     }
   }
 
