@@ -25,6 +25,7 @@ import { BoatFormService } from '@services/boat-form.service';
     UbButtonDirective,
     ReactiveFormsModule,
   ],
+  providers: [BoatFormService],
   templateUrl: './add-boat.component.html',
   styleUrls: ['./add-boat.component.css'],
 })
