@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginResponse } from '@interfaces/login-response';
-
+import { UserResponse } from '@interfaces/user-response';
 @Injectable({
   providedIn: 'root',
 })
@@ -66,6 +66,37 @@ export class AuthService {
         catchError(() => {
           this.isAuthenticatedSubject.next(false);
           return of(false);
+        }),
+      );
+  }
+
+  // Register method to create a new user
+  register(
+    username: string,
+    password: string,
+  ): Observable<HttpResponse<UserResponse>> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+      observe: 'response' as const,
+    };
+
+    return this.http
+      .post<UserResponse>(
+        `${this.apiUrl}/users/register`, // Adjust the URL according to your backend
+        { username, password },
+        httpOptions,
+      )
+      .pipe(
+        map((response) => {
+          // Handle successful registration, you can add additional logic here
+          console.log('Registration successful:', response);
+          return response; // Returning the full response for further usage if needed
+        }),
+        catchError((error) => {
+          console.error('Registration failed:', error);
+          // Handle error (you may also want to return a specific error message)
+          return of(error); // Or `throwError` if you want to propagate the error
         }),
       );
   }

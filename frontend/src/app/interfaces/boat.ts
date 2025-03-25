@@ -6,5 +6,5 @@ export interface Boat {
   length: number;
   ownerName: string;
   price: number;
-  registrationNumber: string;
+  registrationNumber: string | null;
 }
