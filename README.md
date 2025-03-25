@@ -10,6 +10,20 @@ This application is designed for managing boats, allowing users to register, log
 - [Running the Application](#running-the-application)
 - [Initial Data](#initial-data)
 
+## Requirements
+
+### Frontend
+
+![alt text](image-5.png)
+
+### Backend
+
+![alt text](image-6.png)
+
+### Technologies
+
+![alt text](image-7.png)
+
 ## Technologies Used
 
 - **Frontend**:
@@ -66,7 +80,13 @@ To generate a secure random string (32 hash) for use as a secret key (e.g., for 
 openssl rand -base64 32
 ```
 
-This command generates a 32-character hexadecimal string (
+This command generates a 32-character hexadecimal string
+
+Run this command in the `/backend ` directory.
+
+```bash
+mvn clean install
+```
 
 2. Build and run the Docker containers using:
 
