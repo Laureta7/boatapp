@@ -1,5 +1,5 @@
 <div class="container mx-auto p-4">
-  <div *ngIf="boat" ubCard class="max-w-md w-full">
+  <div *ngIf="boat" ubCard class="max-w-md w-full p-4">
     <div ubCardHeader class="p-4 border-b">
       <h3 ubCardTitle class="text-2xl font-bold mb-2">
         {{ isEditMode ? "Modifier" : boat.name }}
@@ -18,7 +18,7 @@
         class="text-muted-foreground mb-4"
         *ngIf="!isEditMode"
       >
-        {{ boat.description }}
+        {{ boat.ownerName }}
       </p>
     </div>
 
@@ -29,7 +29,9 @@
       class="flex flex-col space-y-4"
     >
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700"
+        <label
+          for="name"
+          class="block text-sm font-medium text-muted-foreground"
           >Nom du bateau</label
         >
         <input
@@ -51,7 +53,9 @@
       </div>
 
       <div>
-        <label for="ownerName" class="block text-sm font-medium text-gray-700"
+        <label
+          for="ownerName"
+          class="block text-sm font-medium text-muted-foreground"
           >Propriétaire</label
         >
         <input
@@ -75,7 +79,9 @@
         </div>
       </div>
       <div>
-        <label for="description" class="block text-sm font-medium text-gray-700"
+        <label
+          for="description"
+          class="block text-sm font-medium text-muted-foreground"
           >Description</label
         >
         <textarea
@@ -98,7 +104,9 @@
         </div>
       </div>
       <div>
-        <label for="year" class="block text-sm font-medium text-gray-700"
+        <label
+          for="year"
+          class="block text-sm font-medium text-muted-foreground"
           >Année</label
         >
         <input
@@ -125,7 +133,9 @@
         </div>
       </div>
       <div>
-        <label for="length" class="block text-sm font-medium text-gray-700"
+        <label
+          for="length"
+          class="block text-sm font-medium text-muted-foreground"
           >Longueur</label
         >
         <input
@@ -151,7 +161,9 @@
         </div>
       </div>
       <div>
-        <label for="price" class="block text-sm font-medium text-gray-700"
+        <label
+          for="price"
+          class="block text-sm font-medium text-muted-foreground"
           >Prix</label
         >
         <input
@@ -179,7 +191,7 @@
       <div>
         <label
           for="registrationNumber"
-          class="block text-sm font-medium text-gray-700"
+          class="block text-sm font-medium text-muted-foreground"
           >Numéro d'immatriculation</label
         >
         <input
@@ -208,9 +220,9 @@
         </button>
         <button
           ubButton
+          variant="outline"
           type="submit"
           [disabled]="boatForm.pristine"
-          class="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
         >
           Sauvegarder
         </button>
@@ -220,7 +232,7 @@
     <ng-template #viewMode>
       <div ubCardContent class="p-6">
         <p ubCardDescription class="text-lg mb-2">
-          <strong>Description:</strong> {{ boat.description }}
+          <strong>Description </strong> {{ boat.description }}
         </p>
         <p ubCardDescription class="text-lg mb-2">
           <strong>Année</strong> {{ boat.year }}
@@ -254,6 +266,6 @@
   </div>
 
   <div *ngIf="!boat" class="flex justify-center items-center h-screen">
-    <p class="text-xl text-gray-500">Chargement ...</p>
+    <p class="text-xl text-muted-foreground">Chargement ...</p>
   </div>
 </div>
