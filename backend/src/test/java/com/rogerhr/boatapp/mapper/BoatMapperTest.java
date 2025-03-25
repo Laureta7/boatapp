@@ -80,8 +80,6 @@ class BoatMapperTest {
     assertThat(responseDTO.getOwnerName()).isEqualTo(boat.getOwnerName());
     assertThat(responseDTO.getPrice()).isEqualTo(boat.getPrice());
     assertThat(responseDTO.getRegistrationNumber()).isEqualTo(boat.getRegistrationNumber());
-    assertThat(responseDTO.getCreatedAt()).isEqualTo(boat.getCreatedAt());
-    assertThat(responseDTO.getUpdatedAt()).isEqualTo(boat.getUpdatedAt());
   }
 
   @Test

@@ -1,0 +1,17 @@
+<main
+  class="flex flex-col items-center justify-center min-h-screen bg-background p-6"
+>
+  <div>
+    <button
+      *ngIf="isAuthenticated"
+      ubButton
+      variant="outline"
+      (click)="logout()"
+      class="mr-2"
+    >
+      Se déconnecter
+    </button>
+  </div>
+
+  <router-outlet></router-outlet>
+</main>

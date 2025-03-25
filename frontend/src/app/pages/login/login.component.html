@@ -1,0 +1,84 @@
+<div ubCard class="w-full max-w-sm mx-auto shadow-lg p-6 bg-white rounded-lg">
+  <div ubCardHeader>
+    <h3 ubCardTitle class="text-xl font-bold">Connexion</h3>
+    <p ubCardDescription class="text-gray-500">Entrez vos informations</p>
+  </div>
+
+  <div ubCardContent>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login($event)"
+      class="flex flex-col space-y-4"
+    >
+      <div>
+        <label
+          for="username"
+          class="block text-sm font-medium text-muted-foreground"
+          >Nom d'utilisateur</label
+        >
+        <input
+          type="text"
+          id="username"
+          ubInput
+          name="username"
+          formControlName="username"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('username')?.invalid &&
+            (loginForm.get('username')?.touched ||
+              loginForm.get('username')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="loginForm.get('username')?.errors?.['required']">
+            Le nom d'utilisateur est requis.
+          </div>
+          <div *ngIf="loginForm.get('username')?.errors?.['username']">
+            Veuillez entrer un nom d'utilisateur valide.
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-muted-foreground"
+          >Mot de passe</label
+        >
+        <input
+          type="password"
+          id="password"
+          ubInput
+          name="password"
+          formControlName="password"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.touched ||
+              loginForm.get('password')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">
+            Le mot de passe est requis.
+          </div>
+        </div>
+      </div>
+
+      <button ubButton type="submit">Se connecter</button>
+    </form>
+  </div>
+
+  <div ubCardFooter class="text-center">
+    <p class="text-sm text-muted-foreground">
+      Pas encore inscrit ?
+      <a class="text-blue-500" href="register">Créer un compte</a>
+    </p>
+  </div>
+</div>

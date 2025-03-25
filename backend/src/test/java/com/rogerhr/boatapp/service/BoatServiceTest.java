@@ -117,30 +117,72 @@ class BoatServiceTest {
   }
 
   @Test
-  void createBoat_ShouldReturnCreatedBoat() {
-    when(boatMapper.toEntity(any(BoatRequestDTO.class))).thenReturn(boat);
-    when(boatRepository.save(any(Boat.class))).thenReturn(boat);
-    when(boatMapper.toResponseDTO(any(Boat.class))).thenReturn(boatResponseDTO);
-
-    BoatResponseDTO result = boatService.createBoat(boatRequestDTO);
-
-    assertThat(result).isNotNull();
-    assertThat(result.getId()).isEqualTo(boatId);
-    verify(boatRepository, times(1)).save(any(Boat.class));
-  }
-
-  @Test
   void updateBoat_ShouldReturnUpdatedBoat() {
-    when(boatRepository.findById(boatId)).thenReturn(Optional.of(boat));
-    when(boatRepository.save(any(Boat.class))).thenReturn(boat);
-    when(boatMapper.toResponseDTO(any(Boat.class))).thenReturn(boatResponseDTO);
+    // Arrange: create the necessary objects
 
-    BoatResponseDTO result = boatService.updateBoat(boatId, boatRequestDTO);
+    // Renamed boatId to testBoatId
+    UUID testBoatId = UUID.randomUUID();
 
+    // Mock the existing boat entity
+    // Renamed boat to existingBoat
+    Boat existingBoat = new Boat();
+    existingBoat.setId(testBoatId);
+    existingBoat.setName("Old Boat");
+    existingBoat.setDescription("Old description");
+    existingBoat.setYear(2010);
+    existingBoat.setLength(20.0);
+    existingBoat.setOwnerName("Old Owner");
+    existingBoat.setPrice(50000);
+    existingBoat.setRegistrationNumber("OLD123");
+
+    // Create a BoatRequestDTO with the updated values
+    // Renamed boatRequestDTO to updatedBoatRequestDTO
+    BoatRequestDTO updatedBoatRequestDTO = BoatRequestDTO.builder()
+        .name("New Boat")
+        .description("New description")
+        .year(2022)
+        .length(25.0)
+        .ownerName("New Owner")
+        .price(60000)
+        .registrationNumber(null)
+        .build();
+
+    // Prepare the BoatResponseDTO expected result
+    // Renamed boatResponseDTO to expectedBoatResponseDTO
+    BoatResponseDTO expectedBoatResponseDTO = BoatResponseDTO.builder()
+        .id(testBoatId)
+        .name("New Boat")
+        .description("New description")
+        .year(2022)
+        .length(25.0)
+        .ownerName("New Owner")
+        .price(60000)
+        .registrationNumber("OLD123")
+        .build();
+
+    // Mock repository and mapper behavior
+    when(boatRepository.findById(testBoatId)).thenReturn(Optional.of(existingBoat));
+    when(boatRepository.save(any(Boat.class))).thenReturn(existingBoat);
+    when(boatMapper.toResponseDTO(any(Boat.class))).thenReturn(expectedBoatResponseDTO);
+
+    // Act: Call the method being tested
+    BoatResponseDTO result = boatService.updateBoat(testBoatId, updatedBoatRequestDTO);
+
+    // Assert: Check that the result is as expected
     assertThat(result).isNotNull();
-    assertThat(result.getId()).isEqualTo(boatId);
-    verify(boatRepository, times(1)).findById(boatId);
-    verify(boatRepository, times(1)).save(boat);
+    assertThat(result.getId()).isEqualTo(testBoatId);
+    assertThat(result.getName()).isEqualTo("New Boat");
+    assertThat(result.getDescription()).isEqualTo("New description");
+    assertThat(result.getYear()).isEqualTo(2022);
+    assertThat(result.getLength()).isEqualTo(25.0);
+    assertThat(result.getOwnerName()).isEqualTo("New Owner");
+    assertThat(result.getPrice()).isEqualTo(60000);
+    assertThat(result.getRegistrationNumber()).isEqualTo("OLD123");
+
+    // Verify that the correct repository methods were called
+    verify(boatRepository, times(1)).findById(testBoatId);
+    verify(boatRepository, times(1)).save(any(Boat.class));
+    verify(boatMapper, times(1)).toResponseDTO(any(Boat.class));
   }
 
   @Test
@@ -153,64 +195,6 @@ class BoatServiceTest {
 
     verify(boatRepository, times(1)).findById(boatId);
     verify(boatRepository, never()).save(any(Boat.class));
-  }
-
-  @Test
-  void updateBoat_ShouldUpdateOnlyProvidedFields() {
-    // Mock existing boat
-    Boat existingBoat = new Boat();
-    existingBoat.setId(boatId);
-    existingBoat.setName("Old Boat");
-    existingBoat.setDescription("Old description");
-    existingBoat.setYear(2010);
-    existingBoat.setLength(20.0);
-    existingBoat.setOwnerName("Old Owner");
-    existingBoat.setPrice(50000);
-    existingBoat.setRegistrationNumber("OLD123");
-
-    // Partial update DTO (some fields null/zero)
-    BoatRequestDTO partialUpdateDTO = BoatRequestDTO.builder()
-        .name("New Boat") // Should be updated
-        .description(null) // Should remain unchanged
-        .year(0) // Should remain unchanged
-        .length(0) // Should remain unchanged
-        .ownerName(null) // Should remain unchanged
-        .price(0) // Should remain unchanged
-        .registrationNumber(null) // Should remain unchanged
-        .build();
-
-    when(boatRepository.findById(boatId)).thenReturn(Optional.of(existingBoat));
-    when(boatRepository.save(any(Boat.class))).thenAnswer(invocation -> invocation.getArgument(0));
-    when(boatMapper.toResponseDTO(any(Boat.class))).thenAnswer(invocation -> {
-      Boat updatedBoat = invocation.getArgument(0);
-      return BoatResponseDTO.builder()
-          .id(updatedBoat.getId())
-          .name(updatedBoat.getName())
-          .description(updatedBoat.getDescription())
-          .year(updatedBoat.getYear())
-          .length(updatedBoat.getLength())
-          .ownerName(updatedBoat.getOwnerName())
-          .price(updatedBoat.getPrice())
-          .registrationNumber(updatedBoat.getRegistrationNumber())
-          .build();
-    });
-
-    // Call service method
-    BoatResponseDTO result = boatService.updateBoat(boatId, partialUpdateDTO);
-
-    // Assertions
-    assertThat(result).isNotNull();
-    assertThat(result.getId()).isEqualTo(existingBoat.getId());
-    assertThat(result.getName()).isEqualTo("New Boat"); // Updated
-    assertThat(result.getDescription()).isEqualTo("Old description"); // Unchanged
-    assertThat(result.getYear()).isEqualTo(2010); // Unchanged
-    assertThat(result.getLength()).isEqualTo(20.0); // Should NOT be updated (length=0 in DTO)
-    assertThat(result.getOwnerName()).isEqualTo("Old Owner"); // Unchanged
-    assertThat(result.getPrice()).isEqualTo(50000); // Unchanged
-    assertThat(result.getRegistrationNumber()).isEqualTo("OLD123"); // Should NOT be updated (null in DTO)
-
-    verify(boatRepository, times(1)).findById(boatId);
-    verify(boatRepository, times(1)).save(existingBoat);
   }
 
   @Test

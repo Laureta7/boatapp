@@ -1,0 +1,37 @@
+services:
+  backend:
+    image: boatapp-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - JWTSECRET=${JWTSECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    container_name: boatapp-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB} # Utilisation de la variable d'environnement
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - boatapp_postgres_data:/var/lib/postgresql/data
+
+  frontend: # Service pour l'application Angular
+    image: boatapp-frontend # Nom de l'image pour le frontend
+    build:
+      context: ./frontend # Contexte de construction pour le frontend
+      dockerfile: Dockerfile # Le Dockerfile pour le frontend
+    ports:
+      - "4200:80"
+volumes:
+  boatapp_postgres_data: # Volume pour PostgreSQL avec un nom explicite

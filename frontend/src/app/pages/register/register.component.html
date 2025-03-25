@@ -1,0 +1,80 @@
+<div ubCard class="w-full max-w-sm mx-auto shadow-lg p-6 bg-white rounded-lg">
+  <div ubCardHeader>
+    <h3 ubCardTitle class="text-xl font-bold">Inscription</h3>
+    <p ubCardDescription class="text-gray-500">Entrez vos informations</p>
+  </div>
+  <div ubCardContent>
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register($event)"
+      class="flex flex-col space-y-4"
+    >
+      <div>
+        <label
+          for="username"
+          class="block text-sm font-medium text-muted-foreground"
+          >Nom d'utilisateur</label
+        >
+        <input
+          type="text"
+          id="username"
+          ubInput
+          name="username"
+          formControlName="username"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            registerForm.get('username')?.invalid &&
+            (registerForm.get('username')?.touched ||
+              registerForm.get('username')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="registerForm.get('username')?.errors?.['required']">
+            Le nom d'utilisateur est requis.
+          </div>
+        </div>
+      </div>
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-muted-foreground"
+          >Mot de passe</label
+        >
+        <input
+          type="password"
+          id="password"
+          ubInput
+          name="password"
+          formControlName="password"
+          class="w-full mt-1 p-2"
+          required
+        />
+        <div
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            (registerForm.get('password')?.touched ||
+              registerForm.get('password')?.dirty)
+          "
+          class="text-destructive text-sm"
+        >
+          <div *ngIf="registerForm.get('password')?.errors?.['required']">
+            Le mot de passe est requis.
+          </div>
+          <div *ngIf="registerForm.get('password')?.errors?.['minlength']">
+            Le mot de passe doit comporter au moins 8 caractères.
+          </div>
+        </div>
+      </div>
+      <button ubButton type="submit">S'inscrire</button>
+    </form>
+  </div>
+  <div ubCardFooter class="text-center">
+    <p class="text-sm text-muted-foreground">
+      Déjà inscrit ?
+      <a class="text-blue-500" href="login">Se connecter</a>
+    </p>
+  </div>
+</div>
