@@ -18,7 +18,6 @@ import com.rogerhr.boatapp.repository.UserRepository;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 
 @Service
 public class UserService {
@@ -87,7 +86,7 @@ public class UserService {
     cookie.setMaxAge(0); // Set the max age to 0 to delete the cookie
     response.addCookie(cookie);
 
-    return ResponseEntity.ok(new LoginResponse("Logout successful "));
+    return ResponseEntity.ok(new LoginResponse("Logout successful"));
   }
 
 }
