@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rogerhr.boatapp.dto.UserCreateDTO;
 import com.rogerhr.boatapp.dto.UserDTO;
 import com.rogerhr.boatapp.model.LoginResponse;
-import com.rogerhr.boatapp.model.Users;
 import com.rogerhr.boatapp.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;

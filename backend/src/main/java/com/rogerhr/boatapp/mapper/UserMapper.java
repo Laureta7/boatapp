@@ -5,6 +5,10 @@ import com.rogerhr.boatapp.dto.UserDTO;
 import com.rogerhr.boatapp.model.Users;
 
 public class UserMapper {
+  // Private constructor to hide the implicit public one
+  private UserMapper() {
+    // Prevent instantiation
+  }
 
   // Convert a Users entity to UserDTO
   public static UserDTO toUserDTO(Users user) {
