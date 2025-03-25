@@ -1,10 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Boat } from '@interfaces/boat';
@@ -17,6 +12,7 @@ import {
 import { UbButtonDirective } from '@components/ui/button';
 import { CommonModule } from '@angular/common';
 import { BoatRequest } from '@app/interfaces/boat-request';
+import { BoatFormService } from '@services/boat-form.service';
 
 @Component({
   selector: 'app-add-boat',
@@ -37,30 +33,20 @@ export class AddBoatComponent {
   @Output() boatAdded = new EventEmitter<Boat>();
   @Output() canceled = new EventEmitter<void>();
   constructor(
-    private fb: FormBuilder,
+    private boatFormService: BoatFormService,
     private http: HttpClient,
   ) {
-    this.boatForm = this.fb.group({
-      name: ['', Validators.required],
-      ownerName: ['', Validators.required],
-      description: ['', Validators.required],
-      year: [
-        '',
-        [
-          Validators.required,
-          Validators.min(1900),
-          Validators.max(new Date().getFullYear()),
-        ],
-      ],
-      length: ['', [Validators.required, Validators.min(1)]],
-      price: ['', [Validators.required, Validators.min(0)]],
-      registrationNumber: ['', Validators.required],
-    });
+    this.boatForm = this.boatFormService.createBoatForm();
   }
 
   addBoat(): void {
     if (this.boatForm.valid) {
       const newBoat: BoatRequest = this.boatForm.value;
+
+      if (newBoat.registrationNumber === '') {
+        newBoat.registrationNumber = null;
+      }
+
       this.http.post<Boat>(`${environment.apiUrl}/boats`, newBoat).subscribe({
         next: (response: Boat) => {
           this.boatAdded.emit(response);

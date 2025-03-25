@@ -5,5 +5,5 @@ export interface BoatRequest {
   length: number;
   ownerName: string;
   price: number;
-  registrationNumber: string;
+  registrationNumber: string | null;
 }

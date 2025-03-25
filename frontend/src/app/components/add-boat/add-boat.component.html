@@ -6,7 +6,6 @@
         Remplissez les détails ci-dessous.
       </p>
     </div>
-
     <form
       [formGroup]="boatForm"
       (ngSubmit)="addBoat()"
@@ -14,26 +13,29 @@
     >
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700"
-          >Nom
-        </label>
+          >Nom</label
+        >
         <input
           type="text"
           id="name"
           ubInput
           formControlName="name"
           class="mt-1 block w-full border rounded-lg p-2"
-          required
         />
+
         <div
-          *ngIf="
-            boatForm.get('ownerName')?.invalid &&
-            boatForm.get('ownerName')?.touched
-          "
+          *ngIf="boatForm.get('name')?.invalid && boatForm.get('name')?.touched"
           class="text-red-500 text-sm"
         >
-          Le nom du bateau est requis.
+          <div *ngIf="boatForm.get('name')?.errors?.['required']">
+            Le nom du bateau est requis.
+          </div>
+          <div *ngIf="boatForm.get('name')?.errors?.['minlength']">
+            Le nom du bateau doit contenir au moins 1 caractère.
+          </div>
         </div>
       </div>
+
       <div>
         <label for="ownerName" class="block text-sm font-medium text-gray-700"
           >Propriétaire</label
@@ -53,7 +55,9 @@
           "
           class="text-red-500 text-sm"
         >
-          Le nom du propriétaire est requis.
+          <div *ngIf="boatForm.get('ownerName')?.errors?.['required']">
+            Le nom du propriétaire est requis.
+          </div>
         </div>
       </div>
 
@@ -66,7 +70,6 @@
           ubInput
           formControlName="description"
           class="mt-1 block w-full border rounded-lg p-2"
-          required
         ></textarea>
         <div
           *ngIf="
@@ -75,7 +78,9 @@
           "
           class="text-red-500 text-sm"
         >
-          La description est requise.
+          <div *ngIf="boatForm.get('description')?.errors?.['required']">
+            La description est requise.
+          </div>
         </div>
       </div>
 
@@ -95,7 +100,15 @@
           *ngIf="boatForm.get('year')?.invalid && boatForm.get('year')?.touched"
           class="text-red-500 text-sm"
         >
-          L'année est requise et doit être entre 1900 et l'année actuelle.
+          <div *ngIf="boatForm.get('year')?.errors?.['required']">
+            L'année est requise.
+          </div>
+          <div *ngIf="boatForm.get('year')?.errors?.['min']">
+            L'année doit être supérieure ou égale à 1900.
+          </div>
+          <div *ngIf="boatForm.get('year')?.errors?.['max']">
+            L'année ne peut pas dépasser l'année actuelle.
+          </div>
         </div>
       </div>
 
@@ -117,7 +130,12 @@
           "
           class="text-red-500 text-sm"
         >
-          La longueur est requise et doit être supérieure à 0.
+          <div *ngIf="boatForm.get('length')?.errors?.['required']">
+            La longueur est requise.
+          </div>
+          <div *ngIf="boatForm.get('length')?.errors?.['min']">
+            La longueur doit être supérieure à 0.
+          </div>
         </div>
       </div>
 
@@ -131,7 +149,6 @@
           ubInput
           formControlName="price"
           class="mt-1 block w-full border rounded-lg p-2"
-          required
         />
         <div
           *ngIf="
@@ -139,7 +156,12 @@
           "
           class="text-red-500 text-sm"
         >
-          Le prix est requis et doit être un montant positif.
+          <div *ngIf="boatForm.get('price')?.errors?.['required']">
+            Le prix est requis.
+          </div>
+          <div *ngIf="boatForm.get('price')?.errors?.['min']">
+            Le prix doit être supérieur ou égal à 0.
+          </div>
         </div>
       </div>
 
@@ -155,7 +177,6 @@
           ubInput
           formControlName="registrationNumber"
           class="mt-1 block w-full border rounded-lg p-2"
-          required
         />
         <div
           *ngIf="
@@ -164,7 +185,16 @@
           "
           class="text-red-500 text-sm"
         >
-          Le numéro d'immatriculation est requis.
+          <div
+            *ngIf="boatForm.get('registrationNumber')?.errors?.['minlength']"
+          >
+            Le numéro d'immatriculation doit contenir au moins 5 caractères.
+          </div>
+          <div
+            *ngIf="boatForm.get('registrationNumber')?.errors?.['maxlength']"
+          >
+            Le numéro d'immatriculation doit contenir au maximum 20 caractères.
+          </div>
         </div>
       </div>
 

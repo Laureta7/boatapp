@@ -54,7 +54,7 @@ public class UserService {
     return UserMapper.toUserDTO(savedUser);
   }
 
-  public ResponseEntity<LoginResponse> verifyUser(@Valid UserCreateDTO userCreateDTO, HttpServletResponse response) {
+  public ResponseEntity<LoginResponse> verifyUser(UserCreateDTO userCreateDTO, HttpServletResponse response) {
     try {
       Authentication authentication = authManager.authenticate(
           new UsernamePasswordAuthenticationToken(userCreateDTO.getUsername(), userCreateDTO.getPassword()));

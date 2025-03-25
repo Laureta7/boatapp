@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
@@ -19,6 +14,7 @@ import {
 } from '@components/ui/card';
 import { UbButtonDirective } from '@components/ui/button';
 import { CommonModule } from '@angular/common';
+import { BoatFormService } from '@services/boat-form.service';
 
 @Component({
   selector: 'app-boat-detail',
@@ -42,28 +38,12 @@ export class BoatDetailComponent implements OnInit {
   isEditMode = false;
 
   constructor(
-    private fb: FormBuilder,
+    private boatFormService: BoatFormService,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
   ) {
-    // Init form
-    this.boatForm = this.fb.group({
-      name: ['', Validators.required],
-      ownerName: ['', Validators.required],
-      description: ['', Validators.required],
-      year: [
-        '',
-        [
-          Validators.required,
-          Validators.min(1900),
-          Validators.max(new Date().getFullYear()),
-        ],
-      ],
-      length: ['', [Validators.required, Validators.min(1)]],
-      price: ['', [Validators.required, Validators.min(0)]],
-      registrationNumber: ['', Validators.required],
-    });
+    this.boatForm = this.boatFormService.createBoatForm();
   }
 
   ngOnInit(): void {
@@ -98,6 +78,9 @@ export class BoatDetailComponent implements OnInit {
   saveBoat(): void {
     if (this.boatForm.valid) {
       const updatedBoat = this.boatForm.value;
+      if (updatedBoat.registrationNumber === '') {
+        updatedBoat.registrationNumber = null;
+      }
 
       this.http
         .put(`${environment.apiUrl}/boats/${this.boat.id}`, updatedBoat)

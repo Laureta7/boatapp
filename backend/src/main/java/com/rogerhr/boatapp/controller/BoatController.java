@@ -9,6 +9,7 @@ import com.rogerhr.boatapp.dto.BoatResponseDTO;
 import com.rogerhr.boatapp.service.BoatService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class BoatController {
   // Create a boat (Prend un BoatRequestDTO et retourne un BoatResponseDTO)
   @Operation(summary = "Create a boat", description = "Authentication required")
   @PostMapping
-  public ResponseEntity<BoatResponseDTO> createBoat(@RequestBody BoatRequestDTO boatRequestDTO) {
+  public ResponseEntity<BoatResponseDTO> createBoat(@RequestBody @Valid BoatRequestDTO boatRequestDTO) {
     BoatResponseDTO createdBoat = boatService.createBoat(boatRequestDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdBoat);
   }
@@ -62,7 +63,7 @@ public class BoatController {
   @PutMapping("/{id}")
   public ResponseEntity<BoatResponseDTO> updateBoat(
       @PathVariable UUID id,
-      @RequestBody BoatRequestDTO boatRequestDTO) {
+      @RequestBody @Valid BoatRequestDTO boatRequestDTO) {
     BoatResponseDTO updatedBoat = boatService.updateBoat(id, boatRequestDTO);
     return ResponseEntity.ok(updatedBoat);
   }
