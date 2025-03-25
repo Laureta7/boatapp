@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/auth-service.service';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 describe('AppComponent', () => {
@@ -49,7 +49,13 @@ describe('AppComponent', () => {
   });
 
   it('should unsubscribe on destroy', () => {
-    component.ngOnDestroy();
-    // You might want to add more sophisticated checks for ensuring unsubscribe works
+    // Create a spy for the subscription's unsubscribe method
+    const unsubscribeSpy = spyOn(Subscription.prototype, 'unsubscribe');
+
+    component.ngOnInit(); // Initialize and subscribe
+    component.ngOnDestroy(); // Call ngOnDestroy to unsubscribe
+
+    // Check if unsubscribe was called
+    expect(unsubscribeSpy).toHaveBeenCalled();
   });
 });
