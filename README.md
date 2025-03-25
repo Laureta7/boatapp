@@ -10,6 +10,20 @@ This application is designed for managing boats, allowing users to register, log
 - [Running the Application](#running-the-application)
 - [Initial Data](#initial-data)
 
+## Requirements
+
+### Frontend
+
+![alt text](image-5.png)
+
+### Backend
+
+![alt text](image-6.png)
+
+### Technologies
+
+![alt text](image-7.png)
+
 ## Technologies Used
 
 - **Frontend**:
