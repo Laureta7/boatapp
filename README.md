@@ -179,6 +179,8 @@ mvn test
 
 This will execute the unit tests defined in your backend codebase and display the results in the terminal.
 
+After running the tests, you can access the JaCoCo test coverage report at the following location: `/backend/target/site/jacoco/index.html`
+
 #### SonarQube Analysis
 
 You can also run a Docker image of SonarQube and then perform a quality analysis of your codebase using the following commands:
@@ -200,5 +202,3 @@ You can also run a Docker image of SonarQube and then perform a quality analysis
    ```
 
 This command will clean and package your application, run tests, and send the results to your SonarQube server for static code analysis.
-
----
