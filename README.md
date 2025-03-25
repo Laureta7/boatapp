@@ -85,7 +85,7 @@ This command generates a 32-character hexadecimal string
 Run this command in the `/backend ` directory.
 
 ```bash
-mvn clean install
+mvn clean install -DskipTests
 ```
 
 2. Build and run the Docker containers using:
@@ -98,8 +98,6 @@ mvn clean install
 
    - **Frontend**: `http://localhost:4200`
    - **Backend**: `http://localhost:8080`
-
-using 16 bytes of randomness).
 
 ### Running Without Docker
 
