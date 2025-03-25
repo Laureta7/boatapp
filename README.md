@@ -9,6 +9,7 @@ This application is designed for managing boats, allowing users to register, log
 - [Setup Instructions](#setup-instructions)
 - [Running the Application](#running-the-application)
 - [Initial Data](#initial-data)
+- [Tests](#tests)
 
 ## Requirements
 
@@ -165,7 +166,7 @@ Multiple boats are initialized through the `BoatDataLoader` class. When the appl
 
 ---
 
-### TEST
+## TESTS
 
 To run the tests for this application, you can use the following commands:
 
