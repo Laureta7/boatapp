@@ -15,7 +15,6 @@ This application is designed for managing boats, allowing users to register, log
 - **Frontend**:
   - Angular (for building the user interface)
   - RxJS (for reactive programming)
-  - Bootstrap (for responsive design)
 - **Backend**:
   - Spring Boot (for building RESTful APIs)
   - Spring Data JPA (for database interactions)
@@ -23,20 +22,6 @@ This application is designed for managing boats, allowing users to register, log
   - PostgreSQL (for data storage)
 - **Containerization**:
   - Docker Compose (for running the application in containers)
-
-## Project Structure
-
-```
-/frontend       // Contains the Angular frontend application
-  ├── src/      // Source files for Angular application
-  └── ...
-
-/backend        // Contains the Spring Boot backend application
-  ├── src/      // Source files for Spring Boot application
-  └── ...
-
-/docker-compose.yml // Configuration for running the application with Docker
-```
 
 ## Setup Instructions
 
@@ -122,6 +107,44 @@ If you prefer to run the applications separately without Docker, follow these st
   ```
 - The frontend will run on `http://localhost:4200`.
 
+### Running PostgreSQL as a Docker Container
+
+If you prefer to run only the PostgreSQL database without using Docker Compose, you can execute the following command to start a PostgreSQL container:
+
+```bash
+docker run --name postgres-boatapp -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+```
+
+### Explanation of the Command:
+
+- `--name postgres-boatapp`: This assigns the name `postgres-boatapp` to your PostgreSQL container, which makes it easier to reference later.
+- `-e POSTGRES_PASSWORD=mysecretpassword`: Sets the environment variable for the PostgreSQL root user password. You can replace `mysecretpassword` with a more secure password of your choice.
+- `-d`: Runs the container in detached mode (in the background).
+- `-p 5432:5432`: Maps the host port `5432` to the container port `5432`, allowing your application to access the database on your local machine at this port.
+- `postgres`: This specifies the image to use, in this case, the official PostgreSQL image from Docker Hub.
+
+### After Running the Command
+
+To access the PostgreSQL database, you can connect using tools like `psql`, Docker Desktop, or any database client. Use the following connection details:
+
+- **Host**: `localhost` (or `127.0.0.1`)
+- **Port**: `5432`
+- **Database**: The default database is `postgres`, but you can specify a different database if needed.
+- **Username**: `postgres` (default)
+- **Password**: The password you set in the `POSTGRES_PASSWORD` environment variable.
+
+### Connecting to PostgreSQL
+
+You can connect to the PostgreSQL instance using the following command:
+
+```bash
+psql -h localhost -U postgres -W
+```
+
+---
+
+This addition provides users with the flexibility to run the PostgreSQL database as a container independently of Docker Compose while ensuring they have clear instructions on how to connect to the database afterward. Let me know if this meets your expectations or if you need any further modifications!
+
 ## Initial Data
 
 Multiple boats are initialized through the `BoatDataLoader` class. When the application starts for the first time, this file populates the PostgreSQL database with sample boat data for testing purposes.
@@ -163,7 +186,7 @@ You can also run a Docker image of SonarQube and then perform a quality analysis
 1. **Run SonarQube Docker Image**:
 
    ```bash
-   docker run -d --name sonarqube -p 9000:9000 sonarqube
+   docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
    ```
 
 2. **After SonarQube is running**, execute the following command to perform a clean build and trigger the Sonar analysis (make sure to replace with your actual SonarQube token):

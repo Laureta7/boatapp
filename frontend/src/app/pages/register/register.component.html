@@ -68,43 +68,13 @@
           </div>
         </div>
       </div>
-      <div>
-        <label
-          for="confirmPassword"
-          class="block text-sm font-medium text-muted-foreground"
-          >Confirmer le mot de passe</label
-        >
-        <input
-          type="password"
-          id="confirmPassword"
-          ubInput
-          name="confirmPassword"
-          formControlName="confirmPassword"
-          class="w-full mt-1 p-2"
-          required
-        />
-        <div
-          *ngIf="
-            registerForm.get('confirmPassword')?.invalid &&
-            (registerForm.get('confirmPassword')?.touched ||
-              registerForm.get('confirmPassword')?.dirty)
-          "
-          class="text-destructive text-sm"
-        >
-          <div
-            *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
-          >
-            Veuillez confirmer votre mot de passe.
-          </div>
-        </div>
-      </div>
       <button ubButton type="submit">S'inscrire</button>
     </form>
   </div>
   <div ubCardFooter class="text-center">
     <p class="text-sm text-muted-foreground">
       Déjà inscrit ?
-      <a class="text-blue-500" routerLink="/login">Se connecter</a>
+      <a class="text-blue-500" href="login">Se connecter</a>
     </p>
   </div>
 </div>

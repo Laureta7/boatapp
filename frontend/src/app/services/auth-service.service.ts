@@ -83,20 +83,16 @@ export class AuthService {
 
     return this.http
       .post<UserResponse>(
-        `${this.apiUrl}/users/register`, // Adjust the URL according to your backend
+        `${this.apiUrl}/users/register`,
         { username, password },
         httpOptions,
       )
       .pipe(
         map((response) => {
-          // Handle successful registration, you can add additional logic here
-          console.log('Registration successful:', response);
-          return response; // Returning the full response for further usage if needed
+          return response;
         }),
         catchError((error) => {
-          console.error('Registration failed:', error);
-          // Handle error (you may also want to return a specific error message)
-          return of(error); // Or `throwError` if you want to propagate the error
+          return of(error);
         }),
       );
   }
@@ -108,12 +104,11 @@ export class AuthService {
       .subscribe({
         next: () => {
           console.log('Logout successful');
-          this.isAuthenticatedSubject.next(false); // Update the authentication state
-          this.router.navigate(['/login']); // Redirect to login page
+          this.isAuthenticatedSubject.next(false);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Logout failed', error);
-          // Optionally: Handle additional error scenarios (e.g., show a notification)
         },
       });
   }
