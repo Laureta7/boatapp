@@ -9,6 +9,7 @@ This application is designed for managing boats, allowing users to register, log
 - [Setup Instructions](#setup-instructions)
 - [Running the Application](#running-the-application)
 - [Initial Data](#initial-data)
+- [Tests](#tests)
 
 ## Requirements
 
@@ -44,7 +45,7 @@ This application is designed for managing boats, allowing users to register, log
 - Install Docker and Docker Compose.
 - Ensure you have Node.js and npm (for the Angular frontend).
 - Ensure you have Java 21 (for the Spring Boot backend).
-- Have PostgreSQL installed and running if you plan to run the database locally (though using Docker Compose is recommended).
+- Have PostgreSQL installed and running if you plan to run the database locally or with docker.
 
 ### Running the Application with Docker
 
@@ -133,14 +134,6 @@ If you prefer to run only the PostgreSQL database without using Docker Compose, 
 docker run --name postgres-boatapp -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
 ```
 
-### Explanation of the Command:
-
-- `--name postgres-boatapp`: This assigns the name `postgres-boatapp` to your PostgreSQL container, which makes it easier to reference later.
-- `-e POSTGRES_PASSWORD=mysecretpassword`: Sets the environment variable for the PostgreSQL root user password. You can replace `mysecretpassword` with a more secure password of your choice.
-- `-d`: Runs the container in detached mode (in the background).
-- `-p 5432:5432`: Maps the host port `5432` to the container port `5432`, allowing your application to access the database on your local machine at this port.
-- `postgres`: This specifies the image to use, in this case, the official PostgreSQL image from Docker Hub.
-
 ### After Running the Command
 
 To access the PostgreSQL database, you can connect using tools like `psql`, Docker Desktop, or any database client. Use the following connection details:
@@ -173,7 +166,7 @@ Multiple boats are initialized through the `BoatDataLoader` class. When the appl
 
 ---
 
-### TEST
+## TESTS
 
 To run the tests for this application, you can use the following commands:
 
